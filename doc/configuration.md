@@ -118,6 +118,12 @@ server via SSH (anything that you may type in the `ssh ...` console command):
 ->server('production')
 ```
 
+> **TIP**
+>
+> Adding the usernames, hostnames, IPs and port numbers of the servers is boring
+> and error prone. It's better to define that config in your local SSH config file.
+> [Read this tutorial][4] to learn how to do that.
+
 #### Multiple Servers
 
 If your application is deployed to several servers, add the `server()` option
@@ -427,3 +433,4 @@ public function beforeFinishingDeploy()
 [1]: https://developer.github.com/guides/using-ssh-agent-forwarding/
 [2]: https://heipei.github.io/2015/02/26/SSH-Agent-Forwarding-considered-harmful/
 [3]: https://martinfowler.com/bliki/BlueGreenDeployment.html
+[4]: tutorials/local-ssh-config.md
