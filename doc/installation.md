@@ -32,14 +32,14 @@ class AppKernel extends Kernel
 {
     public function registerBundles()
     {
-        $bundles = array(
-            // ...
-            new EasyCorp\Bundle\EasyDeployBundle\EasyDeployBundle(),
-        );
-
         // ...
+
+        if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
+            // ...
+            $bundles[] = new EasyCorp\Bundle\EasyDeployBundle\EasyDeployBundle();
+        }
     }
 
-    // ...
+    return $bundles;
 }
 ```
