@@ -32,7 +32,7 @@ user directory; for example `/Users/jane`).
 
 **Step 2.** Add the configuration for the server using this format:
 
-```
+```ini
 Host client1
   HostName 123.123.123.123
   User user1
@@ -52,7 +52,7 @@ Additional Config Options
 The above example used the `HostName`, `User` and `Port` options, but SSH config
 files can define a lot of other options. These are the most common:
 
-```
+```ini
 Host client1
     # ...
 
