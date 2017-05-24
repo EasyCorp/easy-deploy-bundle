@@ -52,6 +52,11 @@ $ ./bin/console deploy -v
 $ ./bin/console rollback -v
 ```
 
+> **TIP**
+>
+> There are lots of reasons why SSH connections to remote servers may fail. Check
+> out this [list of common SSH connection issues][1] and their possible solutions.
+
 Testing the Deployment and the Rollback
 ---------------------------------------
 
@@ -75,3 +80,5 @@ executing any of them.
 
 You are almost ready to deploy your Symfony application. Read the next article
 so you can learn how to configure the deployment in less than one minute.
+
+[1]: tutorials/remote-ssh-config.md
