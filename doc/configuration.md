@@ -11,7 +11,7 @@ provides two *deployers* that implement different strategies:
   tools like Capistrano, Capifony and Deployer PHP.
 * **Custom Deployer**, it's a strategy that assumes nothing about how you want
   to deploy your application. It's similar to Python's Fabric tool, so it's just
-  a SSH toolkit instead of a deployer.
+  an SSH toolkit instead of a deployer.
 
 There are plans to add more deployment strategies in the future. Open issues to
 ask for new strategies or vote for the existing issues so we can make better
@@ -24,7 +24,7 @@ EasyDeploy uses plain PHP files to configure the deployment process. In other
 words, you don't have to learn any special syntax and you won't face any of the
 problems and constraints imposed by XML, JSON and YAML files.
 
-The first time you run the `deploy` command in a Symfony application, a initial
+The first time you run the `deploy` command in a Symfony application, an initial
 config file is created for you. Go ahead, run `deploy` and open the generated
 config file. This is what you'll see:
 
@@ -46,7 +46,7 @@ return new class extends DefaultDeployer
 };
 ```
 
-The configuration file must return a PHP class extending from the base class
+The configuration file must return a PHP class extending the base class
 that corresponds to the deployment strategy used by your application. In PHP 7
 this is easy because you can create anonymous classes (`new class extends ...`).
 
@@ -68,9 +68,9 @@ common to all of them.
 
 ### SSH Agent Forwarding
 
-[SSH agent forwarding][1] allows remote server to use your local SSH keys. This
+[SSH agent forwarding][1] allows remote servers to use your local SSH keys. This
 lets remote servers *fool* other services and make them believe that is your
-local machine who is accessing to those services.
+local machine which is accessing those services.
 
 This option is enabled by default, but [some people][2] consider it harmful, so
 you can disable it as follows:
@@ -138,7 +138,7 @@ public function configure()
 
 By default, all configured servers are treated as the server where the Symfony
 app is deployed. However, for complex apps you may have servers with different
-responsibilities (workers, database servers, etc.)
+responsibilities (workers, database servers, etc.).
 
 These responsibilities are called **roles**. There is one reserved role called
 **app** which is applied by default to all servers. You can define as many
@@ -265,7 +265,7 @@ to some common methods that are useful to deploy and roll back the application.
 
 ### `runLocal()` Method
 
-Executes the given shell command in the local computer. The working directory of
+Executes the given shell command on the local computer. The working directory of
 the command is set to the local project root directory, so you don't have to add
 a `cd` command before the command:
 
@@ -318,9 +318,9 @@ public function beforeStartingDeploy()
 
 ### `runRemote()` Method
 
-Executes the given shell command in one or more remote servers. By default,
+Executes the given shell command on one or more remote servers. By default,
 remote commands are executed only on the servers with the role `app`. Pass an
-array of role names to execute the command in the servers that contain any of
+array of role names to execute the command on the servers that contain any of
 those roles:
 
 ```php
@@ -386,7 +386,7 @@ public function beforeFinishingDeploy()
 
 This method appends the given message to the log file generated for each
 deployment. If the deployment/rollback is run with the `-v` option, these
-messages are displayed on screen too:
+messages are displayed on the screen too:
 
 ```php
 public function beforeFinishingDeploy()
