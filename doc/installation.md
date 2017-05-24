@@ -38,8 +38,10 @@ class AppKernel extends Kernel
             // ...
             $bundles[] = new EasyCorp\Bundle\EasyDeployBundle\EasyDeployBundle();
         }
+
+        return $bundles;
     }
 
-    return $bundles;
+    // ...
 }
 ```
