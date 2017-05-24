@@ -23,7 +23,7 @@ Check the `MaxSessions` and `MaxStartups` config options of the SSH server.
 MaxStartups 10:30:100
 
 # Defines the maximum number of open shell, login or subsystem (e.g. sftp)
-# sessions permitted per connection. This mostly affects to users with
+# sessions permitted per connection. This mostly affects users with
 # multiplexing connections.
 MaxSessions 10
 ```
@@ -71,7 +71,7 @@ the user connecting to the server is allowed or at least not denied:
 # /etc/ssh/sshd_config
 # ...
 
-# these four options are processed in the following order and the accept both
+# these four options are processed in the following order and they accept both
 # full user/group names and patterns
 DenyUsers ...
 AllowUsers ...
