@@ -68,6 +68,33 @@ Then, the following directory structure is created on each remote server:
 EasyDeploy creates this directory structure for you. There's no need to execute
 any command to setup the servers or configure anything.
 
+### Web Server Configuration
+
+If you start using this strategy to deploy an already existing application, you
+may need to update your web server configuration. Specifically, you must update
+the document root to include the `current` symlink, which always points to the
+most recent version. The following example shows the changes needed for the
+Apache web server configuration:
+
+```diff
+<VirtualHost *:80>
+    # ...
+
+-   DocumentRoot    /var/www/vhosts/symfony.com/web
++   DocumentRoot    /var/www/vhosts/symfony.com/current/web
+    DirectoryIndex  app.php
+
+-   <Directory /var/www/vhosts/symfony.com/web>
++   <Directory /var/www/vhosts/symfony.com/current/web>
+        RewriteEngine On
+        RewriteCond   %{REQUEST_FILENAME} !-f
+        RewriteRule   ^(.*)$ app.php [QSA,L]
+    </Directory>
+
+    # ...
+</VirtualHost>
+```
+
 Configuration
 -------------
 
