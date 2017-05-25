@@ -98,6 +98,12 @@ common for all deployers:
   * `->deployDir(string $path = '...')` (the directory in the remote server where
     the application is deployed)
 
+> **NOTE**
+>
+> Depending on your local and remote configuration, cloning the repository code
+> in the remote servers may fail. Read [this tutorial][4] to learn about the
+> most common ways to clone code on remote servers.
+
 ### Symfony Application Options
 
 The Symfony environment must be chosen carefully because, by default, commands
@@ -308,3 +314,4 @@ return new class extends DefaultDeployer
 [1]: http://capistranorb.com/
 [2]: https://github.com/everzet/capifony
 [3]: https://github.com/symfony/symfony-demo
+[4]: tutorials/remote-code-cloning.md

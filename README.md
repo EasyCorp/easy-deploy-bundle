@@ -30,6 +30,7 @@ EasyDeployBundle
 
 * [Creating a Local SSH Configuration File](doc/tutorials/local-ssh-config.md)
 * [Troubleshooting Connection Issues to Remote SSH Servers](doc/tutorials/remote-ssh-config.md)
+* [Cloning the Application Code on Remote Servers](doc/tutorials/remote-code-cloning.md)
 
 > **NOTE**
 > EasyDeploy does not "provision" servers (like installing a web server and the
