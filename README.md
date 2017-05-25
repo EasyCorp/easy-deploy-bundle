@@ -28,8 +28,8 @@ EasyDeployBundle
 
 #### Tutorials
 
-* [Creating a Local SSH Configuration File](tutorials/local-ssh-config.md)
-* [Troubleshooting Connection Issues to Remote SSH Servers](tutorials/remote-ssh-config.md)
+* [Creating a Local SSH Configuration File](doc/tutorials/local-ssh-config.md)
+* [Troubleshooting Connection Issues to Remote SSH Servers](doc/tutorials/remote-ssh-config.md)
 
 > **NOTE**
 > EasyDeploy does not "provision" servers (like installing a web server and the
