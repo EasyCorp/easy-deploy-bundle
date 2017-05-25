@@ -80,12 +80,12 @@ Apache web server configuration:
 <VirtualHost *:80>
     # ...
 
--   DocumentRoot    /var/www/vhosts/symfony.com/web
-+   DocumentRoot    /var/www/vhosts/symfony.com/current/web
+-   DocumentRoot    /var/www/vhosts/example.com/web
++   DocumentRoot    /var/www/vhosts/example.com/current/web
     DirectoryIndex  app.php
 
--   <Directory /var/www/vhosts/symfony.com/web>
-+   <Directory /var/www/vhosts/symfony.com/current/web>
+-   <Directory /var/www/vhosts/example.com/web>
++   <Directory /var/www/vhosts/example.com/current/web>
         RewriteEngine On
         RewriteCond   %{REQUEST_FILENAME} !-f
         RewriteRule   ^(.*)$ app.php [QSA,L]
