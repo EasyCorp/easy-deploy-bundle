@@ -18,17 +18,21 @@ EasyDeployBundle
   * Your remote servers: they allow SSH connections from the local machine.
   * Your application: it can use any version of Symfony (2.7+, 3.x, 4.x).
 
-> **NOTE**
-> EasyDeploy does not "provision" servers (like installing a web server and the
-> right PHP version for your application); use Ansible if you need that.
-> EasyDeploy does not deploy containerized applications: use Kubernetes if you
-> need that.
-
-Documentation
--------------
+### Documentation
 
 * [Installation](doc/installation.md)
 * [Getting Started](doc/getting-started.md)
 * [Configuration](doc/configuration.md)
 * [Default Deployer](doc/default-deployer.md)
 * [Custom Deployer](doc/custom-deployer.md)
+
+#### Tutorials
+
+* [Creating a Local SSH Configuration File](tutorials/local-ssh-config.md)
+* [Troubleshooting Connection Issues to Remote SSH Servers](tutorials/remote-ssh-config.md)
+
+> **NOTE**
+> EasyDeploy does not "provision" servers (like installing a web server and the
+> right PHP version for your application); use Ansible if you need that.
+> EasyDeploy does not deploy containerized applications: use Kubernetes if you
+> need that.
