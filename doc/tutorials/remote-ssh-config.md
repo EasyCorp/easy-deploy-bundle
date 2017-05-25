@@ -2,8 +2,12 @@ Troubleshooting Connection Issues to Remote SSH Servers
 =======================================================
 
 EasyDeploy requires working SSH connections to remote servers in order to deploy
-and roll back the applications. This article summarizes the most common connection
+and roll back the applications. This article summarizes the most common SSH
 issues and proposes some solutions.
+
+You can also add the `-v` option to the `ssh` command to enable its verbose mode
+and print debugging messages to help you find connection, authentication, and
+configuration problems (e.g. `ssh -v my-server`).
 
 Connection Refused
 ------------------
@@ -33,6 +37,22 @@ MaxSessions 10
 Deploying an application requires making lots of SSH connections in a short
 period of time. Some firewalls may consider that a suspicious behavior and start
 dropping some of your SSH connections.
+
+Permission denied
+-----------------
+
+### Remote servers may have disabled connections using public keys
+
+This is the recommended method to connect to remote SSH servers, but it may
+have been inadvertently disabled:
+
+```ini
+# /etc/ssh/sshd_config
+# ...
+
+# set this option to 'yes' to enable authentication using public keys
+PubkeyAuthentication yes
+```
 
 ### Remote servers may have disabled connections using passwords
 
