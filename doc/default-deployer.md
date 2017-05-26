@@ -322,7 +322,7 @@ return new class extends DefaultDeployer
         $this->runLocal('git diff --quiet');
 
         $this->log('Running tests, linters and checkers.');
-        $this->runLocal('./bin/console security:check');
+        $this->runLocal('./bin/console security:check --env=dev');
         $this->runLocal('./bin/console lint:twig app/Resources/ --no-debug');
         $this->runLocal('./bin/console lint:yaml app/ --no-debug');
         $this->runLocal('./bin/console lint:xliff app/Resources/ --no-debug');
