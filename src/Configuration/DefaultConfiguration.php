@@ -289,24 +289,32 @@ final class DefaultConfiguration extends AbstractConfiguration
     {
         $this->permissionMethod = 'chmod';
         $this->permissionMode = $mode;
+
+        return $this;
     }
 
     public function fixPermissionsWithChown(string $webServerUser) : self
     {
         $this->permissionMethod = 'chown';
         $this->permissionUser = $webServerUser;
+
+        return $this;
     }
 
     public function fixPermissionsWithChgrp(string $webServerGroup) : self
     {
         $this->permissionMethod = 'chgrp';
         $this->permissionGroup = $webServerGroup;
+
+        return $this;
     }
 
     public function fixPermissionsWithAcl(string $webServerUser) : self
     {
         $this->permissionMethod = 'acl';
         $this->permissionUser = $webServerUser;
+
+        return $this;
     }
 
     // Relative to the project root directory
