@@ -15,12 +15,12 @@ use EasyCorp\Bundle\EasyDeployBundle\Task\Task;
 
 class AllowsLoginViaSsh extends AbstractRequirement
 {
-    public function getMessage() : string
+    public function getMessage(): string
     {
         return '<ok>[OK]</> The server allows to login via SSH from the local machine';
     }
 
-    public function getChecker() : Task
+    public function getChecker(): Task
     {
         $shellCommand = sprintf('echo %s', mt_rand());
 

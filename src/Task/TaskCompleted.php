@@ -30,27 +30,27 @@ class TaskCompleted
         $this->exitCode = $exitCode;
     }
 
-    public function isSuccessful() : bool
+    public function isSuccessful(): bool
     {
         return 0 === $this->exitCode;
     }
 
-    public function getServer() : Server
+    public function getServer(): Server
     {
         return $this->server;
     }
 
-    public function getOutput() : string
+    public function getOutput(): string
     {
         return $this->output;
     }
 
-    public function getTrimmedOutput() : string
+    public function getTrimmedOutput(): string
     {
         return trim($this->output);
     }
 
-    public function getExitCode() : int
+    public function getExitCode(): int
     {
         return $this->exitCode;
     }

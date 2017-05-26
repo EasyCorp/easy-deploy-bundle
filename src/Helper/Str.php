@@ -17,27 +17,27 @@ namespace EasyCorp\Bundle\EasyDeployBundle\Helper;
  */
 class Str
 {
-    public static function startsWith(string $haystack, string $needle) : bool
+    public static function startsWith(string $haystack, string $needle): bool
     {
         return '' !== $needle && 0 === mb_strpos($haystack, $needle);
     }
 
-    public static function endsWith(string $haystack, string $needle) : bool
+    public static function endsWith(string $haystack, string $needle): bool
     {
         return $needle === mb_substr($haystack, -mb_strlen($needle));
     }
 
-    public static function contains(string $haystack, string $needle) : bool
+    public static function contains(string $haystack, string $needle): bool
     {
         return '' !== $needle && false !== mb_strpos($haystack, $needle);
     }
 
-    public static function lineSeparator(string $char = '-') : string
+    public static function lineSeparator(string $char = '-'): string
     {
         return str_repeat($char, 80);
     }
 
-    public static function prefix($text, string $prefix) : string
+    public static function prefix($text, string $prefix): string
     {
         $text = is_array($text) ? $text : explode(PHP_EOL, $text);
 
@@ -46,7 +46,7 @@ class Str
         }, $text));
     }
 
-    public static function stringify($value) : string
+    public static function stringify($value): string
     {
         if (is_resource($value)) {
             return 'PHP Resource';
@@ -67,7 +67,7 @@ class Str
         return (string) $value;
     }
 
-    public static function formatAsTable(array $data, bool $sortKeys = true) : string
+    public static function formatAsTable(array $data, bool $sortKeys = true): string
     {
         if ($sortKeys) {
             ksort($data);

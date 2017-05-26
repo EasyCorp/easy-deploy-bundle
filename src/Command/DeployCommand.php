@@ -80,7 +80,7 @@ class DeployCommand extends Command
         $deployer->doDeploy();
     }
 
-    private function getDefaultConfigPath(string $stageName) : string
+    private function getDefaultConfigPath(string $stageName): string
     {
         $symfonyVersion = Kernel::MAJOR_VERSION;
         $defaultConfigPaths = [
@@ -96,7 +96,7 @@ class DeployCommand extends Command
         return $defaultConfigPaths[$symfonyVersion];
     }
 
-    private function createDefaultConfigFile(InputInterface $input, OutputInterface $output, string $defaultConfigPath, string $stageName) : void
+    private function createDefaultConfigFile(InputInterface $input, OutputInterface $output, string $defaultConfigPath, string $stageName): void
     {
         $helper = $this->getHelper('question');
         $question = new ConfirmationQuestion(sprintf("\n<bg=yellow> WARNING </> There is no config file to deploy '%s' stage.\nDo you want to create a minimal config file for it? [Y/n] ", $stageName), true);
