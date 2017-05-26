@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services
+    http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="easy_deploy.command.deploy" class="EasyCorp\Bundle\EasyDeployBundle\Command\DeployCommand">
+            <argument type="service" id="file_locator" />
+            <argument type="expression">container.hasParameter('kernel.project_dir') ? parameter('kernel.project_dir') : parameter('kernel.root_dir') ~ '/..'</argument>
+            <argument>%kernel.logs_dir%</argument>
+            <tag name="console.command" command="deploy" />
+        </service>
+
+        <service id="easy_deploy.command.rollback" class="EasyCorp\Bundle\EasyDeployBundle\Command\RollbackCommand">
+            <argument type="expression">container.hasParameter('kernel.project_dir') ? parameter('kernel.project_dir') : parameter('kernel.root_dir') ~ '/..'</argument>
+            <argument>%kernel.logs_dir%</argument>
+            <tag name="console.command" command="rollback" />
+        </service>
+    </services>
+</container>
