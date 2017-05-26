@@ -7,7 +7,7 @@ git:
 
 cache:
   directories:
-    - $HOME/.composer/cache
+    - $HOME/.composer/cache/files
 
 matrix:
   fast_finish: true
@@ -35,7 +35,7 @@ before_install:
 
 install:
   - if [[ "$CHECK_PHP_SYNTAX" == "yes" ]]; then composer require --dev --no-update friendsofphp/php-cs-fixer; fi;
-  - composer update --prefer-dist --no-interaction --no-suggest --no-progress --ansi $COMPOSER_FLAGS
+  - composer update --prefer-dist --no-interaction --no-suggest --no-progress --ansi
 
 script:
   - vendor/bin/phpunit
