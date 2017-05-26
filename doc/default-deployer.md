@@ -153,14 +153,14 @@ always relative to the project root dir:
   * `->templatesDir(string $path = '...')`
   * `->webDir(string $path = '...')`
 
-These options configure the files and dirs which are shared between all
-releases. The values must be paths relative to the project root dir (which is
-usually `kernel.root_dir/../`). Their default values depend on the Symfony
-version used by your application:
+This option configures the files and dirs which are shared between all releases.
+The values must be paths relative to the project root dir (which is usually
+`kernel.root_dir/../`). Its default value depends on the Symfony version used by
+your application:
 
-  * `->sharedFiles(array $paths = ['...'])` (by default, `app/config/parameters.yml`
-    in Symfony 2 and 3 and nothing in Symfony 4)
-  * `->sharedDirs(array $paths = ['...'])` (by default, the logs/ dir)
+  * `->sharedFilesAndDirs(array $paths = ['...'])` (by default,
+    `app/config/parameters.yml` file in Symfony 2 and 3 and no file in Symfony 4;
+    and the `app/logs/` dir in Symfony 2 and `var/logs/` in Symfony 3 and 4)
 
 These options enable/disable some operations commonly executed after the
 application is installed:
