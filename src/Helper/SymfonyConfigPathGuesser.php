@@ -21,14 +21,14 @@ class SymfonyConfigPathGuesser
 
     public static function guess(string $projectDir, string $stage): string
     {
-        if (is_dir($confifDir = sprintf(self::CONFIG_DIR, $projectDir))) {
-            return $confifDir.sprintf('/%s/deploy.php', $stage);
+        if (is_dir($configDir = sprintf(self::CONFIG_DIR, $projectDir))) {
+            return sprintf('%s/%s/deploy.php', $configDir, $stage);
         }
 
-        if (is_dir($confifDir = sprintf(self::LEGACY_CONFIG_DIR, $projectDir))) {
-            return $confifDir.sprintf('/deploy_%s.php', $stage);
+        if (is_dir($configDir = sprintf(self::LEGACY_CONFIG_DIR, $projectDir))) {
+            return sprintf('%s/deploy_%s.php', $configDir, $stage);
         }
 
-        throw new \RuntimeException(sprintf('No default config dir found. Looked for %s and %s.', self::CONFIG_DIR, self::LEGACY_CONFIG_DIR));
+        throw new \RuntimeException(sprintf('None of the usual Symfony config dirs exist in the application. Create one of these dirs before continuing: "%s" or "%s".', self::CONFIG_DIR, self::LEGACY_CONFIG_DIR));
     }
 }
