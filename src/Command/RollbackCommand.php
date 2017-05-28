@@ -12,13 +12,12 @@
 namespace EasyCorp\Bundle\EasyDeployBundle\Command;
 
 use EasyCorp\Bundle\EasyDeployBundle\Context;
-use EasyCorp\Bundle\EasyDeployBundle\Exception\SymfonyVersionException;
+use EasyCorp\Bundle\EasyDeployBundle\Helper\SymfonyConfigPathGuesser;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\HttpKernel\Kernel;
 
 class RollbackCommand extends Command
 {
@@ -57,7 +56,7 @@ class RollbackCommand extends Command
             return $this->configFilePath = $customConfigPath;
         }
 
-        $defaultConfigPath = $this->getDefaultConfigPath($input->getArgument('stage'));
+        $defaultConfigPath = SymfonyConfigPathGuesser::guess($this->projectDir, $input->getArgument('stage'));
         if (is_readable($defaultConfigPath)) {
             return $this->configFilePath = $defaultConfigPath;
         }
@@ -73,21 +72,5 @@ class RollbackCommand extends Command
         $deployer = include $this->configFilePath;
         $deployer->initialize($context);
         $deployer->doRollback();
-    }
-
-    private function getDefaultConfigPath(string $stageName) : string
-    {
-        $symfonyVersion = Kernel::MAJOR_VERSION;
-        $defaultConfigPaths = [
-            2 => sprintf('%s/app/config/deploy_%s.php', $this->projectDir, $stageName),
-            3 => sprintf('%s/app/config/deploy_%s.php', $this->projectDir, $stageName),
-            4 => sprintf('%s/etc/%s/deploy.php', $this->projectDir, $stageName),
-        ];
-
-        if (!isset($defaultConfigPaths[$symfonyVersion])) {
-            throw new SymfonyVersionException($symfonyVersion);
-        }
-
-        return $defaultConfigPaths[$symfonyVersion];
     }
 }
