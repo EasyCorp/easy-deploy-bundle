@@ -205,7 +205,7 @@ abstract class DefaultDeployer extends AbstractDeployer
         $server->set(Property::web_dir, sprintf('%s/%s', $remoteProjectDir, $this->getConfig(Option::webDir)));
 
         // this is needed because some projects use a binary directory different than the default one of their Symfony version
-        $server->set(Property::console_bin, sprintf('php %s/console', $this->getConfig(Option::binDir) ? $server->get(Property::bin_dir) : $this->findConsoleBinaryPath($server)));
+        $server->set(Property::console_bin, sprintf('%s %s/console', $this->getConfig(Option::remotePhpBinaryPath), $this->getConfig(Option::binDir) ? $server->get(Property::bin_dir) : $this->findConsoleBinaryPath($server)));
     }
 
     // this is needed because it's common for Smyfony projects to use binary directories

@@ -30,6 +30,7 @@ final class DefaultConfiguration extends AbstractConfiguration
     private $keepReleases = 5;
     private $repositoryUrl;
     private $repositoryBranch = 'master';
+    private $remotePhpBinaryPath = 'php';
     private $updateRemoteComposerBinary = false;
     private $remoteComposerBinaryPath = '/usr/local/bin/composer';
     private $composerInstallFlags = '--no-dev --prefer-dist --no-interaction --quiet';
@@ -119,6 +120,13 @@ final class DefaultConfiguration extends AbstractConfiguration
     public function repositoryBranch(string $branchName) : self
     {
         $this->repositoryBranch = $branchName;
+
+        return $this;
+    }
+
+    public function remotePhpBinaryPath(string $path) : self
+    {
+        $this->remotePhpBinaryPath = $path;
 
         return $this;
     }

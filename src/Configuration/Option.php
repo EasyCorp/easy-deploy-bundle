@@ -38,6 +38,7 @@ final class Option
     const permissionMode = 'permissionMode';
     const permissionUser = 'permissionUser';
     const permissionGroup = 'permissionGroup';
+    const remotePhpBinaryPath = 'remotePhpBinaryPath';
     const remoteComposerBinaryPath = 'remoteComposerBinaryPath';
     const repositoryBranch = 'repositoryBranch';
     const repositoryUrl = 'repositoryUrl';
