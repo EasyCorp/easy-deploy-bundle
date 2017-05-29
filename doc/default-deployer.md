@@ -110,12 +110,16 @@ common for all deployers:
   * `->server(string $sshDsn, array $roles = ['app'], array $properties = [])`
   * `->useSshAgentForwarding(bool $useIt = true)`
 
-### Composer Options
+### Composer and PHP Options
 
   * `->updateRemoteComposerBinary(bool $updateBeforeInstall = false)`
   * `->remoteComposerBinaryPath(string $path = '/usr/local/bin/composer')`
   * `->composerInstallFlags(string $flags = '--no-dev --prefer-dist --no-interaction --quiet')`
   * `->composerOptimizeFlags(string $flags = '--optimize --quiet')`
+  * `->remotePhpBinaryPath(string $path = 'php')` the path of the PHP command
+    added to Symfony commands. By default is `php` (which means:
+    `php path/to/project/bin/console`). It's useful when the server has multiple
+    PHP installations (e.g. `->remotePhpBinaryPath('/usr/bin/php7.1-sp')`)
 
 ### Code Options
 
