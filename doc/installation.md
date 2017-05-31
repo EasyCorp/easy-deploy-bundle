@@ -4,6 +4,9 @@ Installation
 EasyDeploy is distributed as a bundle that must be installed in each Symfony
 application that you want to deploy.
 
+This bundle requires PHP 7.1, but you can [follow these steps][1] to also use it
+to deploy to servers still running PHP 5.
+
 If you use Symfony Flex
 -----------------------
 
@@ -45,3 +48,5 @@ class AppKernel extends Kernel
     // ...
 }
 ```
+
+[1]: tutorials/using-easydeploy-with-php5.md
