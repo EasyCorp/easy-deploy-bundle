@@ -326,19 +326,38 @@ final class DefaultConfiguration extends AbstractConfiguration
     }
 
     // Relative to the project root directory
+    public function sharedFiles(array $paths) : self
+    {
+        $this->sharedFiles = $paths;
+
+        return $this;
+    }
+
+    // Relative to the project root directory
+    public function sharedDirs(array $paths) : self
+    {
+        $this->sharedDirs = $paths;
+
+        return $this;
+    }
+
+    // Relative to the project root directory
     public function sharedFilesAndDirs(array $paths) : self
     {
-        $this->sharedDirs = [];
-        $this->sharedFiles = [];
+        $sharedDirs = [];
+        $sharedFiles = [];
 
         foreach ($paths as $path) {
             $this->validatePathIsRelativeToProject($path, __METHOD__);
             if (is_dir($this->localProjectDir.DIRECTORY_SEPARATOR.$path)) {
-                $this->sharedDirs[] = rtrim($path, DIRECTORY_SEPARATOR);
+                $sharedDirs[] = rtrim($path, DIRECTORY_SEPARATOR);
             } else {
-                $this->sharedFiles[] = $path;
+                $sharedFiles[] = $path;
             }
         }
+
+        $this->sharedFiles($sharedFiles);
+        $this->sharedDirs($sharedDirs);
 
         return $this;
     }
