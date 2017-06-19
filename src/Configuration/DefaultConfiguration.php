@@ -272,6 +272,10 @@ final class DefaultConfiguration extends AbstractConfiguration
 
         $localRelativePaths = array_map(function ($absolutePath) {
             $relativePath = str_replace($this->localProjectDir, '', $absolutePath);
+            if (Str::startsWith($absolutePath, $this->localProjectDir)) {
+                $relativePath = mb_substr($absolutePath, mb_strlen($this->localProjectDir));
+            }
+
             $this->validatePathIsRelativeToProject($relativePath, 'controllersToRemove');
 
             return trim($relativePath, DIRECTORY_SEPARATOR);
