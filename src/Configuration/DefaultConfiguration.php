@@ -367,7 +367,7 @@ final class DefaultConfiguration extends AbstractConfiguration
             $this->setDirs('app', 'app/config', 'app/cache', 'app/logs', 'src', 'app/Resources/views', 'web');
             $this->controllersToRemove(['web/app_*.php']);
             $this->sharedFiles = ['app/config/parameters.yml'];
-            $this->sharedDirs = ['app/logs/'];
+            $this->sharedDirs = ['app/logs'];
             $this->writableDirs = ['app/cache/', 'app/logs/'];
             $this->dumpAsseticAssets = true;
         } elseif (3 === $symfonyVersion) {
