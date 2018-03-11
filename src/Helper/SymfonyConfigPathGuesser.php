@@ -17,7 +17,7 @@ namespace EasyCorp\Bundle\EasyDeployBundle\Helper;
 class SymfonyConfigPathGuesser
 {
     private const LEGACY_CONFIG_DIR = '%s/app/config';
-    private const CONFIG_DIR = '%s/etc';
+    private const CONFIG_DIR = '%s/config';
 
     public static function guess(string $projectDir, string $stage): string
     {

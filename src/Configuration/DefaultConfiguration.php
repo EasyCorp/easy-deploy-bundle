@@ -62,7 +62,7 @@ final class DefaultConfiguration extends AbstractConfiguration
     {
         parent::__construct();
         $this->localProjectDir = $localProjectDir;
-        $this->setDefaultConfiguration(Kernel::MAJOR_VERSION);
+        $this->setDefaultConfiguration(Kernel::MAJOR_VERSION, Kernel::MINOR_VERSION);
     }
 
     // this proxy method is needed because the autocompletion breaks
@@ -361,26 +361,26 @@ final class DefaultConfiguration extends AbstractConfiguration
         return [Property::bin_dir, Property::config_dir, Property::console_bin, Property::cache_dir, Property::deploy_dir, Property::log_dir, Property::src_dir, Property::templates_dir, Property::web_dir];
     }
 
-    private function setDefaultConfiguration(int $symfonyVersion) : void
+    private function setDefaultConfiguration(int $symfonyMajorVersion, $symfonyMinorVersion) : void
     {
-        if (2 === $symfonyVersion) {
+        if (2 === $symfonyMajorVersion) {
             $this->setDirs('app', 'app/config', 'app/cache', 'app/logs', 'src', 'app/Resources/views', 'web');
             $this->controllersToRemove(['web/app_*.php']);
             $this->sharedFiles = ['app/config/parameters.yml'];
             $this->sharedDirs = ['app/logs/'];
             $this->writableDirs = ['app/cache/', 'app/logs/'];
             $this->dumpAsseticAssets = true;
-        } elseif (3 === $symfonyVersion) {
+        } elseif (3 === $symfonyMajorVersion && 4 < $symfonyMinorVersion) {
             $this->setDirs('bin', 'app/config', 'var/cache', 'var/logs', 'src', 'app/Resources/views', 'web');
             $this->controllersToRemove(['web/app_*.php']);
             $this->sharedFiles = ['app/config/parameters.yml'];
             $this->sharedDirs = ['var/logs'];
             $this->writableDirs = ['var/cache/', 'var/logs/'];
-        } elseif (4 === $symfonyVersion) {
-            $this->setDirs('bin', 'etc', 'var/cache', 'var/logs', 'src', 'templates', 'web');
+        } elseif (4 === $symfonyMajorVersion || (3 === $symfonyMajorVersion && 4 >= $symfonyMinorVersion)) {
+            $this->setDirs('bin', 'config', 'var/cache', 'var/log', 'src', 'templates', 'public');
             $this->controllersToRemove([]);
-            $this->sharedDirs = ['var/logs'];
-            $this->writableDirs = ['var/cache/', 'var/logs/'];
+            $this->sharedDirs = ['var/log'];
+            $this->writableDirs = ['var/cache/', 'var/log/'];
         }
     }
 
