@@ -18,6 +18,9 @@ EasyDeployBundle
   * Your remote servers: they allow SSH connections from the local machine.
   * Your application: it can use any version of Symfony (2.7+, 3.x, 4.x).
 
+This bundle requires PHP 7.1, but you can [follow these steps][1] to also use it
+to deploy to servers still running PHP 5.
+
 ### Documentation
 
 * [Installation](doc/installation.md)
@@ -37,3 +40,5 @@ EasyDeployBundle
 > right PHP version for your application); use Ansible if you need that.
 > EasyDeploy does not deploy containerized applications: use Kubernetes if you
 > need that.
+
+[1]: tutorials/using-easydeploy-with-php5.md
