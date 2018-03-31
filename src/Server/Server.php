@@ -43,17 +43,17 @@ class Server
         $this->port = $params['port'] ?? null;
     }
 
-    public function __toString() : string
+    public function __toString(): string
     {
         return sprintf('%s%s', $this->getUser() ? $this->getUser().'@' : '', $this->getHost());
     }
 
-    public function isLocalHost() : bool
+    public function isLocalHost(): bool
     {
         return in_array($this->getHost(), self::LOCALHOST_ADDRESSES, true);
     }
 
-    public function resolveProperties(string $expression) : string
+    public function resolveProperties(string $expression): string
     {
         $definedProperties = $this->properties;
         $resolved = preg_replace_callback('/(\{\{\s*(?<propertyName>.+)\s*\}\})/U', function (array $matches) use ($definedProperties, $expression) {
@@ -68,7 +68,7 @@ class Server
         return $resolved;
     }
 
-    public function getProperties() : array
+    public function getProperties(): array
     {
         return $this->properties->all();
     }
@@ -78,17 +78,17 @@ class Server
         return $this->properties->get($propertyName, $default);
     }
 
-    public function set(string $propertyName, $value) : void
+    public function set(string $propertyName, $value): void
     {
         $this->properties->set($propertyName, $value);
     }
 
-    public function has(string $propertyName) : bool
+    public function has(string $propertyName): bool
     {
         return $this->properties->has($propertyName);
     }
 
-    public function getSshConnectionString() : string
+    public function getSshConnectionString(): string
     {
         if ($this->isLocalHost()) {
             return '';
@@ -102,22 +102,22 @@ class Server
         );
     }
 
-    public function getRoles() : array
+    public function getRoles(): array
     {
         return $this->roles;
     }
 
-    public function getUser() : ?string
+    public function getUser(): ?string
     {
         return $this->user;
     }
 
-    public function getHost() : string
+    public function getHost(): string
     {
         return $this->host;
     }
 
-    public function getPort() : ?int
+    public function getPort(): ?int
     {
         return $this->port;
     }

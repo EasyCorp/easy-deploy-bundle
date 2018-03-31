@@ -35,7 +35,7 @@ abstract class AbstractDeployer
     /** @var ConfigurationAdapter */
     private $config;
 
-    abstract public function getRequirements() : array;
+    abstract public function getRequirements(): array;
 
     abstract public function deploy();
 
@@ -48,7 +48,7 @@ abstract class AbstractDeployer
         return $this->config->get($name);
     }
 
-    final public function doDeploy() : void
+    final public function doDeploy(): void
     {
         try {
             $this->log('Executing <hook>beforeStartingDeploy</> hook');
@@ -74,7 +74,7 @@ abstract class AbstractDeployer
         $this->log(sprintf('<success>[OK] Deployment was successful</>'));
     }
 
-    final public function doRollback() : void
+    final public function doRollback(): void
     {
         try {
             $this->log('Executing <hook>beforeStartingRollback</> hook');
@@ -129,7 +129,7 @@ abstract class AbstractDeployer
         $this->log('<h3>Nothing to execute</>');
     }
 
-    public function initialize(Context $context) : void
+    public function initialize(Context $context): void
     {
         $this->context = $context;
         $this->logger = new Logger($context);
@@ -147,22 +147,22 @@ abstract class AbstractDeployer
 
     abstract protected function configure();
 
-    final protected function getContext() : Context
+    final protected function getContext(): Context
     {
         return $this->context;
     }
 
-    final protected function getServers() : ServerRepository
+    final protected function getServers(): ServerRepository
     {
         return $this->config->get('servers');
     }
 
-    final protected function log(string $message) : void
+    final protected function log(string $message): void
     {
         $this->logger->log($message);
     }
 
-    final protected function runLocal(string $command) : TaskCompleted
+    final protected function runLocal(string $command): TaskCompleted
     {
         $task = new Task([$this->getContext()->getLocalHost()], $command, $this->getCommandEnvVars());
 
@@ -172,14 +172,14 @@ abstract class AbstractDeployer
     /**
      * @return TaskCompleted[]
      */
-    final protected function runRemote(string $command, array $roles = [Server::ROLE_APP]) : array
+    final protected function runRemote(string $command, array $roles = [Server::ROLE_APP]): array
     {
         $task = new Task($this->getServers()->findByRoles($roles), $command, $this->getCommandEnvVars());
 
         return $this->taskRunner->run($task);
     }
 
-    final protected function runOnServer(string $command, Server $server) : TaskCompleted
+    final protected function runOnServer(string $command, Server $server): TaskCompleted
     {
         $task = new Task([$server], $command, $this->getCommandEnvVars());
 
@@ -189,7 +189,7 @@ abstract class AbstractDeployer
     // this method checks that any file or directory that goes into "rm -rf" command is
     // relative to the project dir. This safeguard will prevent catastrophic errors
     // related to removing the wrong file or directory on the server.
-    final protected function safeDelete(Server $server, array $absolutePaths) : void
+    final protected function safeDelete(Server $server, array $absolutePaths): void
     {
         $deployDir = $server->get(Property::deploy_dir);
         $pathsToDelete = [];
@@ -208,7 +208,7 @@ abstract class AbstractDeployer
         $this->runOnServer(sprintf('rm -rf %s', implode(' ', $pathsToDelete)), $server);
     }
 
-    private function getCommandEnvVars() : array
+    private function getCommandEnvVars(): array
     {
         $symfonyEnvironment = $this->getConfig(Option::symfonyEnvironment);
         $envVars = null !== $symfonyEnvironment ? ['SYMFONY_ENV' => $symfonyEnvironment] : [];
@@ -216,7 +216,7 @@ abstract class AbstractDeployer
         return $envVars;
     }
 
-    private function checkRequirements() : void
+    private function checkRequirements(): void
     {
         /** @var AbstractRequirement[] $requirements */
         $requirements = $this->getRequirements();
