@@ -31,7 +31,7 @@ class TaskRunner
     /**
      * @return TaskCompleted[]
      */
-    public function run(Task $task) : array
+    public function run(Task $task): array
     {
         $results = [];
         foreach ($task->getServers() as $server) {
@@ -41,7 +41,7 @@ class TaskRunner
         return $results;
     }
 
-    private function doRun(Server $server, string $shellCommand, array $envVars) : TaskCompleted
+    private function doRun(Server $server, string $shellCommand, array $envVars): TaskCompleted
     {
         if ($server->has(Property::project_dir)) {
             $shellCommand = sprintf('cd %s && %s', $server->get(Property::project_dir), $shellCommand);

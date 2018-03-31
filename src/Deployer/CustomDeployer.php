@@ -22,12 +22,12 @@ use EasyCorp\Bundle\EasyDeployBundle\Requirement\CommandExists;
  */
 abstract class CustomDeployer extends AbstractDeployer
 {
-    public function getConfigBuilder() : CustomConfiguration
+    public function getConfigBuilder(): CustomConfiguration
     {
         return new CustomConfiguration();
     }
 
-    public function getRequirements() : array
+    public function getRequirements(): array
     {
         return [
             new CommandExists([$this->getContext()->getLocalHost()], 'ssh'),
