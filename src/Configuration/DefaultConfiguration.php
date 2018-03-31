@@ -326,7 +326,7 @@ final class DefaultConfiguration extends AbstractConfiguration
     }
 
     // Relative to the project root directory
-    public function sharedFilesAndDirs(array $paths): self
+    public function sharedFilesAndDirs(array $paths = []): self
     {
         $this->sharedDirs = [];
         $this->sharedFiles = [];
