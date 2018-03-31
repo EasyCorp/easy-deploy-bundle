@@ -42,7 +42,7 @@ class Context
         $this->localHost = $this->createLocalHost();
     }
 
-    public function __toString() : string
+    public function __toString(): string
     {
         return sprintf(
             'dry-run = %s, debug = %s, logFile = %s, localHost = Object(Server), input = Object(InputInterface), output = Object(OutputInterface)',
@@ -52,42 +52,42 @@ class Context
         );
     }
 
-    public function getLocalHost() : Server
+    public function getLocalHost(): Server
     {
         return $this->localHost;
     }
 
-    public function getLogFilePath() : string
+    public function getLogFilePath(): string
     {
         return $this->logFilePath;
     }
 
-    public function getLocalProjectRootDir() : string
+    public function getLocalProjectRootDir(): string
     {
         return $this->localHost->get(Property::project_dir);
     }
 
-    public function isDryRun() : bool
+    public function isDryRun(): bool
     {
         return $this->dryRun;
     }
 
-    public function isDebug() : bool
+    public function isDebug(): bool
     {
         return $this->debug;
     }
 
-    public function getInput() : InputInterface
+    public function getInput(): InputInterface
     {
         return $this->input;
     }
 
-    public function getOutput() : OutputInterface
+    public function getOutput(): OutputInterface
     {
         return $this->output;
     }
 
-    private function createLocalHost() : Server
+    private function createLocalHost(): Server
     {
         $localhost = new Server('localhost');
         $localhost->set(Property::project_dir, $this->projectDir);

@@ -30,7 +30,7 @@ final class ConfigurationAdapter
         $this->config = $config;
     }
 
-    public function __toString() : string
+    public function __toString(): string
     {
         return Str::formatAsTable($this->getOptions()->all());
     }
@@ -44,7 +44,7 @@ final class ConfigurationAdapter
         return $this->getOptions()->get($optionName);
     }
 
-    private function getOptions() : ParameterBag
+    private function getOptions(): ParameterBag
     {
         if (null !== $this->options) {
             return $this->options;
