@@ -43,7 +43,7 @@ abstract class DefaultDeployer extends AbstractDeployer
         $requirements[] = new AllowsLoginViaSsh($allServers);
         $requirements[] = new CommandExists($appServers, $this->getConfig(Option::remoteComposerBinaryPath));
         if ('acl' === $this->getConfig(Option::permissionMethod)) {
-            $requirements[] = new CommandExists($appServers, $this->getConfig('setfacl'));
+            $requirements[] = new CommandExists($appServers, 'setfacl');
         }
 
         return $requirements;
