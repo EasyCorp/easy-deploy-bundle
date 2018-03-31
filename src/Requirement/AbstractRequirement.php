@@ -24,12 +24,12 @@ abstract class AbstractRequirement
         $this->servers = $servers;
     }
 
-    public function getServers() : array
+    public function getServers(): array
     {
         return $this->servers;
     }
 
-    abstract public function getChecker() : Task;
+    abstract public function getChecker(): Task;
 
-    abstract public function getMessage() : string;
+    abstract public function getMessage(): string;
 }

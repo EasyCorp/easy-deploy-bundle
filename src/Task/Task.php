@@ -34,12 +34,12 @@ class Task
     /**
      * @return Server[]
      */
-    public function getServers() : array
+    public function getServers(): array
     {
         return $this->servers;
     }
 
-    public function isLocal() : bool
+    public function isLocal(): bool
     {
         foreach ($this->servers as $server) {
             if (!$server->isLocalHost()) {
@@ -50,17 +50,17 @@ class Task
         return true;
     }
 
-    public function isRemote() : bool
+    public function isRemote(): bool
     {
         return !$this->isLocal();
     }
 
-    public function getShellCommand() : string
+    public function getShellCommand(): string
     {
         return $this->shellCommand;
     }
 
-    public function getEnvVars() : array
+    public function getEnvVars(): array
     {
         return $this->envVars;
     }

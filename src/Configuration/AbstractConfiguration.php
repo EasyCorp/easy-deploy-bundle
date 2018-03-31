@@ -47,5 +47,5 @@ abstract class AbstractConfiguration
         $this->useSshAgentForwarding = $useIt;
     }
 
-    abstract protected function getReservedServerProperties() : array;
+    abstract protected function getReservedServerProperties(): array;
 }

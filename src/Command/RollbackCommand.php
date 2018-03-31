@@ -75,7 +75,7 @@ class RollbackCommand extends Command
         $deployer->doRollback();
     }
 
-    private function getDefaultConfigPath(string $stageName) : string
+    private function getDefaultConfigPath(string $stageName): string
     {
         $symfonyVersion = Kernel::MAJOR_VERSION;
         $defaultConfigPaths = [
