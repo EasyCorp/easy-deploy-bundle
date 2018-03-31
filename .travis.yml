@@ -1,0 +1,42 @@
+language: php
+
+sudo: false
+
+git:
+    depth: 1
+
+cache:
+  directories:
+    - $HOME/.composer/cache/files
+
+matrix:
+  fast_finish: true
+  include:
+    - php: nightly
+      env:
+        - SYMFONY_VERSION="dev-master"
+        - CHECK_PHP_SYNTAX="no"
+    - php: 7.1
+      env:
+        - SYMFONY_VERSION="3.2.*"
+        - CHECK_PHP_SYNTAX="yes"
+  allow_failures:
+    - php: nightly
+
+before_install:
+  - stty cols 120
+  - INI_FILE=~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+  - echo memory_limit = -1 >> $INI_FILE
+  - echo session.gc_probability = 0 >> $INI_FILE
+  - echo opcache.enable_cli = 1 >> $INI_FILE
+  - rm -f ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini
+  - composer self-update
+  - if [[ "$SYMFONY_VERSION" != "" ]]; then composer require "symfony/symfony:${SYMFONY_VERSION}" --no-update; fi;
+
+install:
+  - if [[ "$CHECK_PHP_SYNTAX" == "yes" ]]; then composer require --dev --no-update friendsofphp/php-cs-fixer; fi;
+  - composer update --prefer-dist --no-interaction --no-suggest --no-progress --ansi
+
+script:
+  - vendor/bin/phpunit
+  - if [[ "$CHECK_PHP_SYNTAX" == "yes" ]]; then php vendor/bin/php-cs-fixer --no-interaction --dry-run --diff -v fix; fi;

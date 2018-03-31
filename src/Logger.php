@@ -33,7 +33,7 @@ final class Logger
         $this->initializeLogFile();
     }
 
-    public function log(string $message) : void
+    public function log(string $message): void
     {
         $isPriorityMessage = Str::startsWith($message, '<h1>');
         $isResultMessage = Str::contains($message, '<error>') || Str::contains($message, '<success>');
@@ -44,7 +44,7 @@ final class Logger
         $this->writeToLogFile($message);
     }
 
-    private function createOutputFormatter() : OutputFormatter
+    private function createOutputFormatter(): OutputFormatter
     {
         return new OutputFormatter(true, [
             'command' => new OutputFormatterStyle('yellow', null),
@@ -61,19 +61,19 @@ final class Logger
         ]);
     }
 
-    private function initializeLogFile() : void
+    private function initializeLogFile(): void
     {
         (new Filesystem())->dumpFile($this->logFilePath, '');
         $this->writeToLogFile(sprintf("%s\nDeployment started at %s\n%s", Str::lineSeparator('='), date('r'), Str::lineSeparator('=')));
     }
 
-    private function writeToLogFile(string $message) : void
+    private function writeToLogFile(string $message): void
     {
         $loggedMessage = $this->processLogMessageForFile($message);
         file_put_contents($this->logFilePath, $loggedMessage.PHP_EOL, FILE_APPEND);
     }
 
-    private function processLogMessageForFile(string $message) : string
+    private function processLogMessageForFile(string $message): string
     {
         $replacements = [
             '/<command>(.*)<\/>/' => '"$1"',

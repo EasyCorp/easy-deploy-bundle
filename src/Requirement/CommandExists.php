@@ -23,19 +23,19 @@ class CommandExists extends AbstractRequirement
         $this->commandName = $commandName;
     }
 
-    public function getMessage() : string
+    public function getMessage(): string
     {
         return sprintf('<ok>[OK]</> <command>%s</> command exists', $this->commandName);
     }
 
-    public function getChecker() : Task
+    public function getChecker(): Task
     {
         $shellCommand = sprintf('%s %s', $this->isWindows() ? 'where' : 'which', $this->commandName);
 
         return new Task($this->getServers(), $shellCommand);
     }
 
-    private function isWindows() : bool
+    private function isWindows(): bool
     {
         return '\\' === DIRECTORY_SEPARATOR;
     }
