@@ -54,8 +54,8 @@ final class DefaultConfiguration extends AbstractConfiguration
     private $permissionMode = '0777';
     private $permissionUser;
     private $permissionGroup;
-    private $sharedFiles;
-    private $sharedDirs;
+    private $sharedFiles = [];
+    private $sharedDirs = [];
     private $resetOpCacheFor;
 
     public function __construct(string $localProjectDir)
