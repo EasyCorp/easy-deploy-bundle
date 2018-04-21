@@ -103,8 +103,8 @@ final class DefaultConfiguration extends AbstractConfiguration
         //   https://github.com/<user>/<repo>
         //   https://bitbucket.org/<user>/<repo>
         //   https://gitlab.com/<user>/<repo>.git
-        if (Str::startsWith($url, 'https://')) {
-            $sshUrl = str_replace('https://', 'git@', $url);
+        if (Str::startsWith($url, 'http://') || Str::startsWith($url, 'https://')) {
+            $sshUrl = preg_replace('/https?:\/\/(?<server>.*)\/(?<vendor>.*)\/(?<repository>.*)/', 'git@$1:$2/$3', $url);
             if (!Str::endsWith($sshUrl, '.git')) {
                 $sshUrl .= '.git';
             }
