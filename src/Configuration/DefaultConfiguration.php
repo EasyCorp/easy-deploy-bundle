@@ -23,7 +23,10 @@ use Symfony\Component\HttpKernel\Kernel;
  */
 final class DefaultConfiguration extends AbstractConfiguration
 {
-    // properties are defined as private so the developer don't see them when using
+    // variables starting with an underscore are for internal use only
+    private $_symfonyEnvironmentEnvVarName; // SYMFONY_ENV or APP_ENV
+
+    // properties are defined as private so the developer doesn't see them when using
     // their IDE autocompletion. To simplify things, the builder defines setter
     // methods named the same as each option.
     private $symfonyEnvironment = 'prod';
@@ -364,6 +367,7 @@ final class DefaultConfiguration extends AbstractConfiguration
     private function setDefaultConfiguration(int $symfonyMajorVersion, $symfonyMinorVersion): void
     {
         if (2 === $symfonyMajorVersion) {
+            $this->_symfonyEnvironmentEnvVarName = 'SYMFONY_ENV';
             $this->setDirs('app', 'app/config', 'app/cache', 'app/logs', 'src', 'app/Resources/views', 'web');
             $this->controllersToRemove(['web/app_*.php']);
             $this->sharedFiles = ['app/config/parameters.yml'];
@@ -371,12 +375,14 @@ final class DefaultConfiguration extends AbstractConfiguration
             $this->writableDirs = ['app/cache/', 'app/logs/'];
             $this->dumpAsseticAssets = true;
         } elseif (3 === $symfonyMajorVersion && 4 < $symfonyMinorVersion) {
+            $this->_symfonyEnvironmentEnvVarName = 'SYMFONY_ENV';
             $this->setDirs('bin', 'app/config', 'var/cache', 'var/logs', 'src', 'app/Resources/views', 'web');
             $this->controllersToRemove(['web/app_*.php']);
             $this->sharedFiles = ['app/config/parameters.yml'];
             $this->sharedDirs = ['var/logs'];
             $this->writableDirs = ['var/cache/', 'var/logs/'];
         } elseif (4 === $symfonyMajorVersion || (3 === $symfonyMajorVersion && 4 >= $symfonyMinorVersion)) {
+            $this->_symfonyEnvironmentEnvVarName = 'APP_ENV';
             $this->setDirs('bin', 'config', 'var/cache', 'var/log', 'src', 'templates', 'public');
             $this->controllersToRemove([]);
             $this->sharedDirs = ['var/log'];
