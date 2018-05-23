@@ -24,6 +24,7 @@ class Server
     private $host;
     private $port;
     private $properties;
+    private $password;
 
     public function __construct(string $dsn, array $roles = [self::ROLE_APP], array $properties = [])
     {
@@ -34,6 +35,8 @@ class Server
         $params = parse_url(Str::startsWith($dsn, 'ssh://') ? $dsn : 'ssh://'.$dsn);
 
         $this->user = $params['user'] ?? null;
+
+        $this->password = $params['pass'] ?? null;
 
         if (!isset($params['host'])) {
             throw new ServerConfigurationException($dsn, 'The host is missing (define it as an IP address or a host name)');
@@ -94,12 +97,20 @@ class Server
             return '';
         }
 
-        return sprintf('ssh %s%s%s%s',
+        $connectionString = sprintf('ssh %s%s%s%s',
             $this->properties->get('use_ssh_agent_forwarding') ? '-A ' : '',
             $this->user ?? '',
             $this->user ? '@'.$this->host : $this->host,
             $this->port ? ' -p '.$this->port : ''
         );
+
+        if ($this->password) {
+            $connectionString = sprintf('sshpass -p %s '.$connectionString,
+                "'".$this->password."'"
+            );
+        }
+
+        return $connectionString;
     }
 
     public function getRoles(): array
@@ -120,5 +131,10 @@ class Server
     public function getPort(): ?int
     {
         return $this->port;
+    }
+
+    public function getPassword(): ?string
+    {
+        return $this->password;
     }
 }
