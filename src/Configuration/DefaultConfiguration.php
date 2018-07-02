@@ -23,8 +23,13 @@ use Symfony\Component\HttpKernel\Kernel;
  */
 final class DefaultConfiguration extends AbstractConfiguration
 {
+    const SYMFONY_2 = 2;
+    const SYMFONY_3 = 3;
+    const SYMFONY_4 = 4;
+
     // variables starting with an underscore are for internal use only
     private $_symfonyEnvironmentEnvVarName; // SYMFONY_ENV or APP_ENV
+    private $_symfonyDirectoryStructureVersion;
 
     // properties are defined as private so the developer doesn't see them when using
     // their IDE autocompletion. To simplify things, the builder defines setter
@@ -65,7 +70,8 @@ final class DefaultConfiguration extends AbstractConfiguration
     {
         parent::__construct();
         $this->localProjectDir = $localProjectDir;
-        $this->setDefaultConfiguration(Kernel::MAJOR_VERSION, Kernel::MINOR_VERSION);
+        $this->guessSymfonyDirectoryStructure(Kernel::MAJOR_VERSION, Kernel::MINOR_VERSION);
+        $this->setDefaultConfiguration();
     }
 
     // this proxy method is needed because the autocompletion breaks
@@ -364,9 +370,27 @@ final class DefaultConfiguration extends AbstractConfiguration
         return [Property::bin_dir, Property::config_dir, Property::console_bin, Property::cache_dir, Property::deploy_dir, Property::log_dir, Property::src_dir, Property::templates_dir, Property::web_dir];
     }
 
-    private function setDefaultConfiguration(int $symfonyMajorVersion, $symfonyMinorVersion): void
+    private function guessSymfonyDirectoryStructure(int $symfonyMajorVersion, $symfonyMinorVersion): void
     {
         if (2 === $symfonyMajorVersion) {
+            $this->_symfonyDirectoryStructureVersion = self::SYMFONY_2;
+        } elseif (3 === $symfonyMajorVersion && 4 < $symfonyMinorVersion) {
+            $this->_symfonyDirectoryStructureVersion = self::SYMFONY_3;
+        } elseif (4 === $symfonyMajorVersion || (3 === $symfonyMajorVersion && 4 >= $symfonyMinorVersion)) {
+            $this->_symfonyDirectoryStructureVersion = self::SYMFONY_4;
+        }
+    }
+
+    public function setDefaultConfiguration(?int $symfonyDirectoryStructureVersion = null): void
+    {
+        if (in_array($symfonyDirectoryStructureVersion, [self::SYMFONY_2, self::SYMFONY_3, self::SYMFONY_4])) {
+            $this->_symfonyDirectoryStructureVersion = $symfonyDirectoryStructureVersion;
+        } else {
+            $symfonyDirectoryStructureVersion = $this->_symfonyDirectoryStructureVersion;
+        }
+
+        // TODO: Be a bit more clever and for example take composer.json extra configuration into account
+        if (self::SYMFONY_2 === $symfonyDirectoryStructureVersion) {
             $this->_symfonyEnvironmentEnvVarName = 'SYMFONY_ENV';
             $this->setDirs('app', 'app/config', 'app/cache', 'app/logs', 'src', 'app/Resources/views', 'web');
             $this->controllersToRemove(['web/app_*.php']);
@@ -374,14 +398,14 @@ final class DefaultConfiguration extends AbstractConfiguration
             $this->sharedDirs = ['app/logs'];
             $this->writableDirs = ['app/cache/', 'app/logs/'];
             $this->dumpAsseticAssets = true;
-        } elseif (3 === $symfonyMajorVersion && 4 < $symfonyMinorVersion) {
+        } elseif (self::SYMFONY_3 === $symfonyDirectoryStructureVersion) {
             $this->_symfonyEnvironmentEnvVarName = 'SYMFONY_ENV';
             $this->setDirs('bin', 'app/config', 'var/cache', 'var/logs', 'src', 'app/Resources/views', 'web');
             $this->controllersToRemove(['web/app_*.php']);
             $this->sharedFiles = ['app/config/parameters.yml'];
             $this->sharedDirs = ['var/logs'];
             $this->writableDirs = ['var/cache/', 'var/logs/'];
-        } elseif (4 === $symfonyMajorVersion || (3 === $symfonyMajorVersion && 4 >= $symfonyMinorVersion)) {
+        } elseif (self::SYMFONY_4 === $symfonyDirectoryStructureVersion) {
             $this->_symfonyEnvironmentEnvVarName = 'APP_ENV';
             $this->setDirs('bin', 'config', 'var/cache', 'var/log', 'src', 'templates', 'public');
             $this->controllersToRemove([]);
