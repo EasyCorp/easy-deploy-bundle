@@ -365,23 +365,7 @@ final class DefaultConfiguration extends AbstractConfiguration
         return $this;
     }
 
-    protected function getReservedServerProperties(): array
-    {
-        return [Property::bin_dir, Property::config_dir, Property::console_bin, Property::cache_dir, Property::deploy_dir, Property::log_dir, Property::src_dir, Property::templates_dir, Property::web_dir];
-    }
-
-    private function guessSymfonyDirectoryStructure(int $symfonyMajorVersion, $symfonyMinorVersion): void
-    {
-        if (2 === $symfonyMajorVersion) {
-            $this->_symfonyDirectoryStructureVersion = self::SYMFONY_2;
-        } elseif (3 === $symfonyMajorVersion && 4 < $symfonyMinorVersion) {
-            $this->_symfonyDirectoryStructureVersion = self::SYMFONY_3;
-        } elseif (4 === $symfonyMajorVersion || (3 === $symfonyMajorVersion && 4 >= $symfonyMinorVersion)) {
-            $this->_symfonyDirectoryStructureVersion = self::SYMFONY_4;
-        }
-    }
-
-    public function setDefaultConfiguration(?int $symfonyDirectoryStructureVersion = null): void
+    public function setDefaultConfiguration(?int $symfonyDirectoryStructureVersion = null): self
     {
         if (in_array($symfonyDirectoryStructureVersion, [self::SYMFONY_2, self::SYMFONY_3, self::SYMFONY_4])) {
             $this->_symfonyDirectoryStructureVersion = $symfonyDirectoryStructureVersion;
@@ -411,6 +395,24 @@ final class DefaultConfiguration extends AbstractConfiguration
             $this->controllersToRemove([]);
             $this->sharedDirs = ['var/log'];
             $this->writableDirs = ['var/cache/', 'var/log/'];
+        }
+
+        return $this;
+    }
+
+    protected function getReservedServerProperties(): array
+    {
+        return [Property::bin_dir, Property::config_dir, Property::console_bin, Property::cache_dir, Property::deploy_dir, Property::log_dir, Property::src_dir, Property::templates_dir, Property::web_dir];
+    }
+
+    private function guessSymfonyDirectoryStructure(int $symfonyMajorVersion, $symfonyMinorVersion): void
+    {
+        if (2 === $symfonyMajorVersion) {
+            $this->_symfonyDirectoryStructureVersion = self::SYMFONY_2;
+        } elseif (3 === $symfonyMajorVersion && 4 < $symfonyMinorVersion) {
+            $this->_symfonyDirectoryStructureVersion = self::SYMFONY_3;
+        } elseif (4 === $symfonyMajorVersion || (3 === $symfonyMajorVersion && 4 >= $symfonyMinorVersion)) {
+            $this->_symfonyDirectoryStructureVersion = self::SYMFONY_4;
         }
     }
 
