@@ -369,12 +369,9 @@ final class DefaultConfiguration extends AbstractConfiguration
     {
         if (in_array($symfonyDirectoryStructureVersion, [self::SYMFONY_2, self::SYMFONY_3, self::SYMFONY_4])) {
             $this->_symfonyDirectoryStructureVersion = $symfonyDirectoryStructureVersion;
-        } else {
-            $symfonyDirectoryStructureVersion = $this->_symfonyDirectoryStructureVersion;
         }
 
-        // TODO: Be a bit more clever and for example take composer.json extra configuration into account
-        if (self::SYMFONY_2 === $symfonyDirectoryStructureVersion) {
+        if (self::SYMFONY_2 === $this->_symfonyDirectoryStructureVersion) {
             $this->_symfonyEnvironmentEnvVarName = 'SYMFONY_ENV';
             $this->setDirs('app', 'app/config', 'app/cache', 'app/logs', 'src', 'app/Resources/views', 'web');
             $this->controllersToRemove(['web/app_*.php']);
@@ -382,14 +379,14 @@ final class DefaultConfiguration extends AbstractConfiguration
             $this->sharedDirs = ['app/logs'];
             $this->writableDirs = ['app/cache/', 'app/logs/'];
             $this->dumpAsseticAssets = true;
-        } elseif (self::SYMFONY_3 === $symfonyDirectoryStructureVersion) {
+        } elseif (self::SYMFONY_3 === $this->_symfonyDirectoryStructureVersion) {
             $this->_symfonyEnvironmentEnvVarName = 'SYMFONY_ENV';
             $this->setDirs('bin', 'app/config', 'var/cache', 'var/logs', 'src', 'app/Resources/views', 'web');
             $this->controllersToRemove(['web/app_*.php']);
             $this->sharedFiles = ['app/config/parameters.yml'];
             $this->sharedDirs = ['var/logs'];
             $this->writableDirs = ['var/cache/', 'var/logs/'];
-        } elseif (self::SYMFONY_4 === $symfonyDirectoryStructureVersion) {
+        } elseif (self::SYMFONY_4 === $this->_symfonyDirectoryStructureVersion) {
             $this->_symfonyEnvironmentEnvVarName = 'APP_ENV';
             $this->setDirs('bin', 'config', 'var/cache', 'var/log', 'src', 'templates', 'public');
             $this->controllersToRemove([]);
@@ -407,6 +404,7 @@ final class DefaultConfiguration extends AbstractConfiguration
 
     private function guessSymfonyDirectoryStructure(int $symfonyMajorVersion, $symfonyMinorVersion): void
     {
+        // TODO: Be a bit more clever and for example take composer.json extra configuration into account
         if (2 === $symfonyMajorVersion) {
             $this->_symfonyDirectoryStructureVersion = self::SYMFONY_2;
         } elseif (3 === $symfonyMajorVersion && 4 < $symfonyMinorVersion) {
