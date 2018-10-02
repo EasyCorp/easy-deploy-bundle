@@ -199,6 +199,22 @@ public function configure()
 }
 ```
 
+You can also set the `profile` property to load a profile file (.bash_profile, .profile, .bashrc, etc...)
+
+```php
+use EasyCorp\Bundle\EasyDeployBundle\Server\Property;
+    
+// ...
+    
+public function configure()
+{
+    return $this->getConfigBuilder()
+        ->server('deployer@hostname1', ['app'], [Property::profile => 'path/to/.bash_profile'])
+        // ...
+    ;
+}
+```
+
 Common Hooks
 ------------
 
