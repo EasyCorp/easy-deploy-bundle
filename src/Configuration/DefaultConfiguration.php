@@ -374,14 +374,14 @@ final class DefaultConfiguration extends AbstractConfiguration
             $this->sharedDirs = ['app/logs'];
             $this->writableDirs = ['app/cache/', 'app/logs/'];
             $this->dumpAsseticAssets = true;
-        } elseif (3 === $symfonyMajorVersion && 4 < $symfonyMinorVersion) {
+        } elseif (3 === $symfonyMajorVersion && 4 <= $symfonyMinorVersion) {
             $this->_symfonyEnvironmentEnvVarName = 'SYMFONY_ENV';
             $this->setDirs('bin', 'app/config', 'var/cache', 'var/logs', 'src', 'app/Resources/views', 'web');
             $this->controllersToRemove(['web/app_*.php']);
             $this->sharedFiles = ['app/config/parameters.yml'];
             $this->sharedDirs = ['var/logs'];
             $this->writableDirs = ['var/cache/', 'var/logs/'];
-        } elseif (4 === $symfonyMajorVersion || (3 === $symfonyMajorVersion && 4 >= $symfonyMinorVersion)) {
+        } elseif (4 === $symfonyMajorVersion || (3 === $symfonyMajorVersion && 4 > $symfonyMinorVersion)) {
             $this->_symfonyEnvironmentEnvVarName = 'APP_ENV';
             $this->setDirs('bin', 'config', 'var/cache', 'var/log', 'src', 'templates', 'public');
             $this->controllersToRemove([]);
