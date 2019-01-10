@@ -407,9 +407,9 @@ final class DefaultConfiguration extends AbstractConfiguration
         // TODO: Be a bit more clever and for example take composer.json extra configuration into account
         if (2 === $symfonyMajorVersion) {
             $this->_symfonyDirectoryStructureVersion = self::SYMFONY_2;
-        } elseif (3 === $symfonyMajorVersion && 4 < $symfonyMinorVersion) {
+        } elseif (3 === $symfonyMajorVersion && 4 > $symfonyMinorVersion) {
             $this->_symfonyDirectoryStructureVersion = self::SYMFONY_3;
-        } elseif (4 === $symfonyMajorVersion || (3 === $symfonyMajorVersion && 4 >= $symfonyMinorVersion)) {
+        } elseif (4 === $symfonyMajorVersion || (3 === $symfonyMajorVersion && 4 <= $symfonyMinorVersion)) {
             $this->_symfonyDirectoryStructureVersion = self::SYMFONY_4;
         }
     }
