@@ -18,7 +18,7 @@ matrix:
         - CHECK_PHP_SYNTAX="no"
     - php: 7.1
       env:
-        - SYMFONY_VERSION="3.2.*"
+        - SYMFONY_VERSION="3.4.*"
         - CHECK_PHP_SYNTAX="yes"
   allow_failures:
     - php: nightly
