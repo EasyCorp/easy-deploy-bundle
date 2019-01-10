@@ -71,6 +71,7 @@ final class DefaultConfiguration extends AbstractConfiguration
         parent::__construct();
         $this->localProjectDir = $localProjectDir;
         $this->guessSymfonyDirectoryStructure(Kernel::MAJOR_VERSION, Kernel::MINOR_VERSION);
+        $this->setEnvironmentVarName(Kernel::MAJOR_VERSION);
         $this->setDefaultConfiguration();
     }
 
@@ -372,7 +373,6 @@ final class DefaultConfiguration extends AbstractConfiguration
         }
 
         if (self::SYMFONY_2 === $this->_symfonyDirectoryStructureVersion) {
-            $this->_symfonyEnvironmentEnvVarName = 'SYMFONY_ENV';
             $this->setDirs('app', 'app/config', 'app/cache', 'app/logs', 'src', 'app/Resources/views', 'web');
             $this->controllersToRemove(['web/app_*.php']);
             $this->sharedFiles = ['app/config/parameters.yml'];
@@ -380,14 +380,12 @@ final class DefaultConfiguration extends AbstractConfiguration
             $this->writableDirs = ['app/cache/', 'app/logs/'];
             $this->dumpAsseticAssets = true;
         } elseif (self::SYMFONY_3 === $this->_symfonyDirectoryStructureVersion) {
-            $this->_symfonyEnvironmentEnvVarName = 'SYMFONY_ENV';
             $this->setDirs('bin', 'app/config', 'var/cache', 'var/logs', 'src', 'app/Resources/views', 'web');
             $this->controllersToRemove(['web/app_*.php']);
             $this->sharedFiles = ['app/config/parameters.yml'];
             $this->sharedDirs = ['var/logs'];
             $this->writableDirs = ['var/cache/', 'var/logs/'];
         } elseif (self::SYMFONY_4 === $this->_symfonyDirectoryStructureVersion) {
-            $this->_symfonyEnvironmentEnvVarName = 'APP_ENV';
             $this->setDirs('bin', 'config', 'var/cache', 'var/log', 'src', 'templates', 'public');
             $this->controllersToRemove([]);
             $this->sharedDirs = ['var/log'];
@@ -402,6 +400,15 @@ final class DefaultConfiguration extends AbstractConfiguration
         return [Property::bin_dir, Property::config_dir, Property::console_bin, Property::cache_dir, Property::deploy_dir, Property::log_dir, Property::src_dir, Property::templates_dir, Property::web_dir];
     }
 
+    /**
+     * Guess the directory structure of the project based on the framework version.
+     * Could be manually selected to a different structure on project setup, in that
+     * case the user should set the correct directory structure version in their
+     * deployment configuration.
+     *
+     * @param int $symfonyMajorVersion
+     * @param $symfonyMinorVersion
+     */
     private function guessSymfonyDirectoryStructure(int $symfonyMajorVersion, $symfonyMinorVersion): void
     {
         // TODO: Be a bit more clever and for example take composer.json extra configuration into account
@@ -411,6 +418,20 @@ final class DefaultConfiguration extends AbstractConfiguration
             $this->_symfonyDirectoryStructureVersion = self::SYMFONY_3;
         } elseif (4 === $symfonyMajorVersion || (3 === $symfonyMajorVersion && 4 <= $symfonyMinorVersion)) {
             $this->_symfonyDirectoryStructureVersion = self::SYMFONY_4;
+        }
+    }
+
+    /**
+     * Set the name of the environment variable for Symfony depending on the framework version
+     *
+     * @param int $symfonyMajorVersion
+     */
+    private function setEnvironmentVarName(int $symfonyMajorVersion): void
+    {
+        if ($symfonyMajorVersion > 3) {
+            $this->_symfonyEnvironmentEnvVarName = 'APP_ENV';
+        } else {
+            $this->_symfonyEnvironmentEnvVarName = 'SYMFONY_ENV';
         }
     }
 
