@@ -23,8 +23,13 @@ use Symfony\Component\HttpKernel\Kernel;
  */
 final class DefaultConfiguration extends AbstractConfiguration
 {
+    const SYMFONY_2 = 2;
+    const SYMFONY_3 = 3;
+    const SYMFONY_4 = 4;
+
     // variables starting with an underscore are for internal use only
     private $_symfonyEnvironmentEnvVarName; // SYMFONY_ENV or APP_ENV
+    private $_symfonyDirectoryStructureVersion;
 
     // properties are defined as private so the developer doesn't see them when using
     // their IDE autocompletion. To simplify things, the builder defines setter
@@ -65,7 +70,9 @@ final class DefaultConfiguration extends AbstractConfiguration
     {
         parent::__construct();
         $this->localProjectDir = $localProjectDir;
-        $this->setDefaultConfiguration(Kernel::MAJOR_VERSION, Kernel::MINOR_VERSION);
+        $this->guessSymfonyDirectoryStructure(Kernel::MAJOR_VERSION, Kernel::MINOR_VERSION);
+        $this->setEnvironmentVarName(Kernel::MAJOR_VERSION);
+        $this->setDefaultConfiguration();
     }
 
     // this proxy method is needed because the autocompletion breaks
@@ -359,34 +366,72 @@ final class DefaultConfiguration extends AbstractConfiguration
         return $this;
     }
 
-    protected function getReservedServerProperties(): array
+    public function setDefaultConfiguration(?int $symfonyDirectoryStructureVersion = null): self
     {
-        return [Property::bin_dir, Property::config_dir, Property::console_bin, Property::cache_dir, Property::deploy_dir, Property::log_dir, Property::src_dir, Property::templates_dir, Property::web_dir];
-    }
+        if (in_array($symfonyDirectoryStructureVersion, [self::SYMFONY_2, self::SYMFONY_3, self::SYMFONY_4])) {
+            $this->_symfonyDirectoryStructureVersion = $symfonyDirectoryStructureVersion;
+        }
 
-    private function setDefaultConfiguration(int $symfonyMajorVersion, $symfonyMinorVersion): void
-    {
-        if (2 === $symfonyMajorVersion) {
-            $this->_symfonyEnvironmentEnvVarName = 'SYMFONY_ENV';
+        if (self::SYMFONY_2 === $this->_symfonyDirectoryStructureVersion) {
             $this->setDirs('app', 'app/config', 'app/cache', 'app/logs', 'src', 'app/Resources/views', 'web');
             $this->controllersToRemove(['web/app_*.php']);
             $this->sharedFiles = ['app/config/parameters.yml'];
             $this->sharedDirs = ['app/logs'];
             $this->writableDirs = ['app/cache/', 'app/logs/'];
             $this->dumpAsseticAssets = true;
-        } elseif (3 === $symfonyMajorVersion && 4 < $symfonyMinorVersion) {
-            $this->_symfonyEnvironmentEnvVarName = 'SYMFONY_ENV';
+        } elseif (self::SYMFONY_3 === $this->_symfonyDirectoryStructureVersion) {
             $this->setDirs('bin', 'app/config', 'var/cache', 'var/logs', 'src', 'app/Resources/views', 'web');
             $this->controllersToRemove(['web/app_*.php']);
             $this->sharedFiles = ['app/config/parameters.yml'];
             $this->sharedDirs = ['var/logs'];
             $this->writableDirs = ['var/cache/', 'var/logs/'];
-        } elseif (4 === $symfonyMajorVersion || (3 === $symfonyMajorVersion && 4 >= $symfonyMinorVersion)) {
-            $this->_symfonyEnvironmentEnvVarName = 'APP_ENV';
+        } elseif (self::SYMFONY_4 === $this->_symfonyDirectoryStructureVersion) {
             $this->setDirs('bin', 'config', 'var/cache', 'var/log', 'src', 'templates', 'public');
             $this->controllersToRemove([]);
             $this->sharedDirs = ['var/log'];
             $this->writableDirs = ['var/cache/', 'var/log/'];
+        }
+
+        return $this;
+    }
+
+    protected function getReservedServerProperties(): array
+    {
+        return [Property::bin_dir, Property::config_dir, Property::console_bin, Property::cache_dir, Property::deploy_dir, Property::log_dir, Property::src_dir, Property::templates_dir, Property::web_dir];
+    }
+
+    /**
+     * Guess the directory structure of the project based on the framework version.
+     * Could be manually selected to a different structure on project setup, in that
+     * case the user should set the correct directory structure version in their
+     * deployment configuration.
+     *
+     * @param int $symfonyMajorVersion
+     * @param $symfonyMinorVersion
+     */
+    private function guessSymfonyDirectoryStructure(int $symfonyMajorVersion, $symfonyMinorVersion): void
+    {
+        // TODO: Be a bit more clever and for example take composer.json extra configuration into account
+        if (2 === $symfonyMajorVersion) {
+            $this->_symfonyDirectoryStructureVersion = self::SYMFONY_2;
+        } elseif (3 === $symfonyMajorVersion && 4 > $symfonyMinorVersion) {
+            $this->_symfonyDirectoryStructureVersion = self::SYMFONY_3;
+        } elseif (4 === $symfonyMajorVersion || (3 === $symfonyMajorVersion && 4 <= $symfonyMinorVersion)) {
+            $this->_symfonyDirectoryStructureVersion = self::SYMFONY_4;
+        }
+    }
+
+    /**
+     * Set the name of the environment variable for Symfony depending on the framework version
+     *
+     * @param int $symfonyMajorVersion
+     */
+    private function setEnvironmentVarName(int $symfonyMajorVersion): void
+    {
+        if ($symfonyMajorVersion > 3) {
+            $this->_symfonyEnvironmentEnvVarName = 'APP_ENV';
+        } else {
+            $this->_symfonyEnvironmentEnvVarName = 'SYMFONY_ENV';
         }
     }
 
