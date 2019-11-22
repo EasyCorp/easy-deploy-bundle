@@ -72,5 +72,7 @@ class RollbackCommand extends Command
         $deployer = include $this->configFilePath;
         $deployer->initialize($context);
         $deployer->doRollback();
+
+        return 0;
     }
 }
