@@ -3,7 +3,7 @@ language: php
 sudo: false
 
 git:
-    depth: 1
+  depth: 1
 
 cache:
   directories:
@@ -16,9 +16,17 @@ matrix:
       env:
         - SYMFONY_VERSION="dev-master"
         - CHECK_PHP_SYNTAX="no"
-    - php: 7.1
+    - php: 7.2
       env:
-        - SYMFONY_VERSION="3.2.*"
+        - SYMFONY_VERSION="3.4.*"
+        - CHECK_PHP_SYNTAX="yes"
+    - php: 7.2
+      env:
+        - SYMFONY_VERSION="4.4.*"
+        - CHECK_PHP_SYNTAX="yes"
+    - php: 7.2
+      env:
+        - SYMFONY_VERSION="5.0.*"
         - CHECK_PHP_SYNTAX="yes"
   allow_failures:
     - php: nightly
@@ -31,7 +39,7 @@ before_install:
   - echo opcache.enable_cli = 1 >> $INI_FILE
   - rm -f ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini
   - composer self-update
-  - if [[ "$SYMFONY_VERSION" != "" ]]; then composer require "symfony/symfony:${SYMFONY_VERSION}" --no-update; fi;
+  - if [[ "$SYMFONY_VERSION" != "" ]]; then composer require "symfony/framework-bundle:${SYMFONY_VERSION}" --no-update; fi;
 
 install:
   - if [[ "$CHECK_PHP_SYNTAX" == "yes" ]]; then composer require --dev --no-update friendsofphp/php-cs-fixer; fi;
