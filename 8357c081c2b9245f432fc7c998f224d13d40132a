@@ -1,0 +1,50 @@
+---------------------------------------------------------------------------
+
+by COil at 2019-12-02T14:06:45Z
+
+Hi @Lustmored , thanks for the PR.
+The travis build fails:
+
+Problem 1
+
+    - symfony/console v5.0.0 requires php ^7.2.5 -> your PHP version (7.1.27) does not satisfy that requirement.
+
+As 7.1 is EOL, I think we should change the version to 7.2.  Can you make a try please?
+
+---------------------------------------------------------------------------
+
+by gustawdaniel at 2019-12-14T12:35:44Z
+
+Can I please accept this pull request?
+
+---------------------------------------------------------------------------
+
+by COil at 2019-12-14T15:08:54Z
+
+The PR can't be accepted as checks are failing. The PHP version requirements must be changed to ^7.2.5
+
+---------------------------------------------------------------------------
+
+by Lustmored at 2019-12-27T14:43:36Z
+
+Sorry guys for taking long to answer, didn't receive notifications somehow. I am experimenting with PHP version constraints, not a Travis master but will do my best.
+
+---------------------------------------------------------------------------
+
+by Lustmored at 2019-12-27T15:04:38Z
+
+I've allowed myself to bump PHP dependency in composer.json and extended test config with 3 major Symfony versions (3.4, 4.4 and 5.0). I am not sure it actually tests against components from specified version. but couldn't find better solution.
+
+Anyways all tests are passing right now. Once again sorry for the delay.
+
+---------------------------------------------------------------------------
+
+by COil at 2020-01-12T17:25:51Z
+
+Hi @javiereguiluz Any chance to have this merged and a new tag please? 🙂
+
+---------------------------------------------------------------------------
+
+by daum at 2020-01-29T21:07:42Z
+
+@javiereguiluz  Do you have a timeline for the merge on this?
