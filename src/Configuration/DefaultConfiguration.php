@@ -381,7 +381,7 @@ final class DefaultConfiguration extends AbstractConfiguration
             $this->sharedFiles = ['app/config/parameters.yml'];
             $this->sharedDirs = ['var/logs'];
             $this->writableDirs = ['var/cache/', 'var/logs/'];
-        } elseif (4 === $symfonyMajorVersion || (3 === $symfonyMajorVersion && 4 >= $symfonyMinorVersion)) {
+        } elseif (4 <= $symfonyMajorVersion || (3 === $symfonyMajorVersion && 4 >= $symfonyMinorVersion)) {
             $this->_symfonyEnvironmentEnvVarName = 'APP_ENV';
             $this->setDirs('bin', 'config', 'var/cache', 'var/log', 'src', 'templates', 'public');
             $this->controllersToRemove([]);

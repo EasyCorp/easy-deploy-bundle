@@ -41,6 +41,15 @@ class TaskRunner
         return $results;
     }
 
+    private function createProcess(string $shellCommand): Process
+    {
+        if (method_exists(Process::class, 'fromShellCommandline')) {
+            return Process::fromShellCommandline($shellCommand);
+        }
+
+        return new Process($shellCommand);
+    }
+
     private function doRun(Server $server, string $shellCommand, array $envVars): TaskCompleted
     {
         if ($server->has(Property::project_dir)) {
@@ -63,9 +72,9 @@ class TaskRunner
         }
 
         if ($server->isLocalHost()) {
-            $process = new Process($shellCommand);
+            $process = $this->createProcess($shellCommand);
         } else {
-            $process = new Process(sprintf('%s %s', $server->getSshConnectionString(), escapeshellarg($shellCommand)));
+            $process = $this->createProcess(sprintf('%s %s', $server->getSshConnectionString(), escapeshellarg($shellCommand)));
         }
 
         $process->setTimeout(null);
