@@ -203,6 +203,8 @@ abstract class AbstractDeployer
 
         if (empty($pathsToDelete)) {
             $this->log('There are no paths to delete.');
+
+            return;
         }
 
         $this->runOnServer(sprintf('rm -rf %s', implode(' ', $pathsToDelete)), $server);
