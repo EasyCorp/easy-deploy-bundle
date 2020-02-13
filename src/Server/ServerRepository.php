@@ -44,4 +44,14 @@ class ServerRepository
             return !empty(array_intersect($roles, $server->getRoles()));
         });
     }
+
+    /**
+     * @return Server[]
+     */
+    public function findWithPassword(): array
+    {
+        return array_filter($this->servers, function (Server $server) {
+            return !empty($server->getPassword());
+        });
+    }
 }
