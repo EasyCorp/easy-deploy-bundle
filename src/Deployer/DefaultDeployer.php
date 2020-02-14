@@ -137,7 +137,7 @@ abstract class DefaultDeployer extends AbstractDeployer
         $this->log('<h3>Nothing to execute</>');
     }
     
-    pubflic function afterPublishing()
+    public function afterPublishing()
     {
         $this->log('<h3>Nothing to execute</>');
     }
