@@ -173,7 +173,7 @@ abstract class AbstractDeployer
         return $this->taskRunner->run($task)[0];
     }
 
-    final protected function getBranchOrTag(): string
+    final protected function getBranchOrTag(): ?string
     {
         return $this->branchOrTag;
     }
