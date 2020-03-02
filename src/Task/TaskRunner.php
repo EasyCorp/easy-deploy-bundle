@@ -65,6 +65,10 @@ class TaskRunner
             $shellCommand = sprintf('(export %s; %s)', $envVarsAsString, $shellCommand);
         }
 
+        if ($server->has(Property::command_decorator)) {
+            $shellCommand = $this->applyCommandDecorator($server->get(Property::command_decorator), $server, $shellCommand, $envVars);
+        }
+
         $this->logger->log(sprintf('[<server>%s</>] Executing command: <command>%s</>', $server, $shellCommand));
 
         if ($this->isDryRun) {
@@ -88,5 +92,10 @@ class TaskRunner
         });
 
         return new TaskCompleted($server, $process->getOutput(), $process->getExitCode());
+    }
+
+    private function applyCommandDecorator(callable $decorator, Server $server, string $shellCommand, array $envVars): string
+    {
+        return $decorator($server, $shellCommand, $envVars);
     }
 }

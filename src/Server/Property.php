@@ -22,6 +22,7 @@ namespace EasyCorp\Bundle\EasyDeployBundle\Server;
 final class Property
 {
     const bin_dir = 'bin_dir';
+    const command_decorator = 'command_decorator';
     const config_dir = 'config_dir';
     const console_bin = 'console_bin';
     const cache_dir = 'cache_dir';
