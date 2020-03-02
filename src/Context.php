@@ -91,7 +91,7 @@ class Context
         return $this->output;
     }
 
-    private function getHelper(string $helperName): ?HelperInterface
+    public function getHelper(string $helperName): ?HelperInterface
     {
         if(!$this->helperSet){
             return null;
