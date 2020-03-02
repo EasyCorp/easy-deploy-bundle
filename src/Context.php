@@ -13,6 +13,8 @@ namespace EasyCorp\Bundle\EasyDeployBundle;
 
 use EasyCorp\Bundle\EasyDeployBundle\Server\Property;
 use EasyCorp\Bundle\EasyDeployBundle\Server\Server;
+use Symfony\Component\Console\Helper\HelperInterface;
+use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -29,8 +31,9 @@ class Context
     private $output;
     private $projectDir;
     private $logFilePath;
+    private $helperSet;
 
-    public function __construct(InputInterface $input, OutputInterface $output, string $projectDir, string $logFilePath, bool $isDryRun, bool $isVerbose)
+    public function __construct(InputInterface $input, OutputInterface $output, string $projectDir, string $logFilePath, bool $isDryRun, bool $isVerbose, ?HelperSet $helperSet = null)
     {
         $this->input = $input;
         $this->output = $output;
@@ -38,6 +41,7 @@ class Context
         $this->logFilePath = $logFilePath;
         $this->dryRun = $isDryRun;
         $this->debug = $isVerbose;
+        $this->helperSet = $helperSet;
 
         $this->localHost = $this->createLocalHost();
     }
@@ -85,6 +89,14 @@ class Context
     public function getOutput(): OutputInterface
     {
         return $this->output;
+    }
+
+    public function getHelper(string $helperName): ?HelperInterface
+    {
+        if(!$this->helperSet){
+            return null;
+        }
+        return $this->helperSet->get($helperName);
     }
 
     private function createLocalHost(): Server

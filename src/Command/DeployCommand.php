@@ -72,7 +72,7 @@ class DeployCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $logFilePath = sprintf('%s/deploy_%s.log', $this->logDir, $input->getArgument('stage'));
-        $context = new Context($input, $output, $this->projectDir, $logFilePath, true === $input->getOption('dry-run'), $output->isVerbose());
+        $context = new Context($input, $output, $this->projectDir, $logFilePath, true === $input->getOption('dry-run'), $output->isVerbose(), $this->getHelperSet());
 
         $deployer = include $this->configFilePath;
         $deployer->initialize($context);
