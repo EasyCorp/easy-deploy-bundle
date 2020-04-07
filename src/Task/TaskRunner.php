@@ -56,6 +56,10 @@ class TaskRunner
             $shellCommand = sprintf('cd %s && %s', $server->get(Property::project_dir), $shellCommand);
         }
 
+        if ($server->has(Property::profile)) {
+            $shellCommand = sprintf('source %s; %s', $server->get(Property::profile), $shellCommand);
+        }
+
         // env vars aren't set with $process->setEnv() because it causes problems
         // that can't be fully solved with inheritEnvironmentVariables()
         if (!empty($envVars)) {

@@ -32,4 +32,5 @@ final class Property
     const templates_dir = 'templates_dir';
     const use_ssh_agent_forwarding = 'use_ssh_agent_forwarding';
     const web_dir = 'web_dir';
+    const profile = 'profile';
 }
