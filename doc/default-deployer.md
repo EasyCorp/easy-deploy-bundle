@@ -18,7 +18,7 @@ What You Need
 * **Symfony Application**:
   * Code must be stored in a Git server (GitHub, BitBucket, GitLab, your own
     server) accessible from the local machine.
-  * The application can use any Symfony version (2.7+, 3.x, 4.x).
+  * The application can use any Symfony version (2.7+, 3.x, 4.x, 5.x).
 
 How Does It Work
 ----------------
