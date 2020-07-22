@@ -247,7 +247,7 @@ abstract class DefaultDeployer extends AbstractDeployer
         $revision = explode("\t", $result->getTrimmedOutput())[0];
 
         if (empty($revision)) {
-            throw new InvalidConfigurationException(sprintf("No revisions found for %s", $this->getConfig(Option::repositoryBranch)));
+            throw new InvalidConfigurationException(sprintf('No revisions found for %s', $this->getConfig(Option::repositoryBranch)));
         }
 
         if ($this->getContext()->isDryRun()) {

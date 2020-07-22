@@ -144,7 +144,6 @@ abstract class AbstractDeployer
         $this->log($this->config);
         $this->log('<h2>Checking technical requirements</>');
         $this->checkRequirements();
-
     }
 
     abstract protected function getConfigBuilder();
@@ -240,5 +239,4 @@ abstract class AbstractDeployer
             $this->log($requirement->getMessage());
         }
     }
-
 }

@@ -127,7 +127,7 @@ final class DefaultConfiguration extends AbstractConfiguration
 
     public function repositoryBranch(string $branchName): self
     {
-        if ($this->passedBranchOrTag === false) {
+        if (false === $this->passedBranchOrTag) {
             $this->repositoryBranch = $branchName;
         }
 
