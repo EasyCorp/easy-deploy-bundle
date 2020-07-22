@@ -17,7 +17,7 @@ namespace EasyCorp\Bundle\EasyDeployBundle\Server;
  */
 class ServerRepository
 {
-    /** @var Server[] $servers */
+    /** @var Server[] */
     private $servers = [];
 
     public function __toString(): string

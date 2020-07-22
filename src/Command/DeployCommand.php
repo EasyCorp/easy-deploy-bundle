@@ -45,6 +45,7 @@ class DeployCommand extends Command
             ->setDescription('Deploys a Symfony application to one or more remote servers.')
             ->setHelp('...')
             ->addArgument('stage', InputArgument::OPTIONAL, 'The stage to deploy to ("production", "staging", etc.)', 'prod')
+            ->addArgument('branch-or-tag', InputArgument::OPTIONAL, 'Branch or tag you would like checked out')
             ->addOption('configuration', 'c', InputOption::VALUE_REQUIRED, 'Load configuration from the given file path')
             ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Shows the commands to perform the deployment without actually executing them')
         ;

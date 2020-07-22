@@ -15,7 +15,7 @@ use EasyCorp\Bundle\EasyDeployBundle\Server\Server;
 
 class Task
 {
-    /** @var Server[] $servers */
+    /** @var Server[] */
     private $servers;
     private $shellCommand;
     private $envVars;

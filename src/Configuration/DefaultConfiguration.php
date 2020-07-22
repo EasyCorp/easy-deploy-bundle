@@ -33,6 +33,7 @@ final class DefaultConfiguration extends AbstractConfiguration
     private $keepReleases = 5;
     private $repositoryUrl;
     private $repositoryBranch = 'master';
+    private $passedBranchOrTag = false;
     private $remotePhpBinaryPath = 'php';
     private $updateRemoteComposerBinary = false;
     private $remoteComposerBinaryPath = '/usr/local/bin/composer';
@@ -61,11 +62,15 @@ final class DefaultConfiguration extends AbstractConfiguration
     private $sharedDirs = [];
     private $resetOpCacheFor;
 
-    public function __construct(string $localProjectDir)
+    public function __construct(string $localProjectDir, ?string $branchOrTag = null)
     {
         parent::__construct();
         $this->localProjectDir = $localProjectDir;
         $this->setDefaultConfiguration(Kernel::MAJOR_VERSION, Kernel::MINOR_VERSION);
+        if (!empty($branchOrTag)) {
+            $this->repositoryBranch = $branchOrTag;
+            $this->passedBranchOrTag = true;
+        }
     }
 
     // this proxy method is needed because the autocompletion breaks
@@ -122,7 +127,9 @@ final class DefaultConfiguration extends AbstractConfiguration
 
     public function repositoryBranch(string $branchName): self
     {
-        $this->repositoryBranch = $branchName;
+        if (false === $this->passedBranchOrTag) {
+            $this->repositoryBranch = $branchName;
+        }
 
         return $this;
     }

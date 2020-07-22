@@ -27,7 +27,7 @@ abstract class DefaultDeployer extends AbstractDeployer
 
     public function getConfigBuilder(): DefaultConfiguration
     {
-        return new DefaultConfiguration($this->getContext()->getLocalProjectRootDir());
+        return new DefaultConfiguration($this->getContext()->getLocalProjectRootDir(), $this->getBranchOrTag());
     }
 
     public function getRequirements(): array
@@ -245,6 +245,11 @@ abstract class DefaultDeployer extends AbstractDeployer
         $this->log('<h2>Getting the revision ID of the code repository</>');
         $result = $this->runLocal(sprintf('git ls-remote %s %s', $this->getConfig(Option::repositoryUrl), $this->getConfig(Option::repositoryBranch)));
         $revision = explode("\t", $result->getTrimmedOutput())[0];
+
+        if (empty($revision)) {
+            throw new InvalidConfigurationException(sprintf('No revisions found for %s', $this->getConfig(Option::repositoryBranch)));
+        }
+
         if ($this->getContext()->isDryRun()) {
             $revision = '(the code revision)';
         }
