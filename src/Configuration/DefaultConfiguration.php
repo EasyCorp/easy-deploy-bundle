@@ -62,7 +62,7 @@ final class DefaultConfiguration extends AbstractConfiguration
     private $sharedDirs = [];
     private $resetOpCacheFor;
 
-    public function __construct(string $localProjectDir, ?string $branchOrTag)
+    public function __construct(string $localProjectDir, ?string $branchOrTag = null)
     {
         parent::__construct();
         $this->localProjectDir = $localProjectDir;
