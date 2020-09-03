@@ -17,7 +17,7 @@ namespace EasyCorp\Bundle\EasyDeployBundle\Server;
  * in uppercase, but these are in snake_case because of how properties are used.
  * Properties can be included in commands using a special syntax
  * (e.g. {{ property-name }}). Using uppercase would create ugly commands
- * (e.g. 'cd {{ BIN_DIR }}' instead of 'cd {{ bind_dir }}').
+ * (e.g. 'cd {{ BIN_DIR }}' instead of 'cd {{ bin_dir }}').
  */
 final class Property
 {
