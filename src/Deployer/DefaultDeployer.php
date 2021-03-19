@@ -237,7 +237,7 @@ abstract class DefaultDeployer extends AbstractDeployer
         $this->runRemote('mkdir -p {{ deploy_dir }} && mkdir -p {{ deploy_dir }}/releases && mkdir -p {{ deploy_dir }}/shared');
 
         /** @var TaskCompleted[] $results */
-        $results = $this->runRemote('set _release_path={{ deploy_dir }}/releases/' . date('dmYHis') . ' && mkdir -p $_release_path && echo $_release_path');
+        $results = $this->runRemote('set _release_path={{ deploy_dir }}/releases/' . date('dmYHis') . '; && mkdir -p $_release_path && echo $_release_path');
         foreach ($results as $result) {
             $remoteProjectDir = $this->getContext()->isDryRun() ? '(the remote project_dir)' : $result->getTrimmedOutput();
             $result->getServer()->set(Property::project_dir, $remoteProjectDir);
