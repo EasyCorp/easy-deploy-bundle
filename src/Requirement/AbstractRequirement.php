@@ -24,7 +24,7 @@ abstract class AbstractRequirement
         $this->server= $server;
     }
 
-    public function getServer(): array
+    public function getServer(): Server
     {
         return $this->server;
     }
