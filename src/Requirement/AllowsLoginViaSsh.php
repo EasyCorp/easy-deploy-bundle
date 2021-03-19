@@ -24,6 +24,6 @@ class AllowsLoginViaSsh extends AbstractRequirement
     {
         $shellCommand = sprintf('echo %s', mt_rand());
 
-        return new Task($this->getServers(), $shellCommand);
+        return new Task([$this->getServer()], $shellCommand);
     }
 }

@@ -24,8 +24,9 @@ class Server
     private $host;
     private $port;
     private $properties;
+    private $windows;
 
-    public function __construct(string $dsn, array $roles = [self::ROLE_APP], array $properties = [])
+    public function __construct(string $dsn, array $roles = [self::ROLE_APP], array $properties = [], bool $windows = null)
     {
         $this->roles = $roles;
         $this->properties = new ParameterBag($properties);
@@ -41,6 +42,9 @@ class Server
         $this->host = $params['host'];
 
         $this->port = $params['port'] ?? null;
+
+        $this->windows = $windows;
+
     }
 
     public function __toString(): string
@@ -120,5 +124,10 @@ class Server
     public function getPort(): ?int
     {
         return $this->port;
+    }
+
+    public function isWindows(): bool
+    {
+        return $this->windows;
     }
 }

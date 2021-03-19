@@ -11,15 +11,16 @@
 
 namespace EasyCorp\Bundle\EasyDeployBundle\Requirement;
 
+use EasyCorp\Bundle\EasyDeployBundle\Server\Server;
 use EasyCorp\Bundle\EasyDeployBundle\Task\Task;
 
 class CommandExists extends AbstractRequirement
 {
     private $commandName;
 
-    public function __construct(array $servers, string $commandName)
+    public function __construct(Server $server, string $commandName)
     {
-        parent::__construct($servers);
+        parent::__construct($server);
         $this->commandName = $commandName;
     }
 
@@ -30,13 +31,8 @@ class CommandExists extends AbstractRequirement
 
     public function getChecker(): Task
     {
-        $shellCommand = sprintf('%s %s', $this->isWindows() ? 'where' : 'which', $this->commandName);
+        $shellCommand = sprintf('%s %s', $this->getServer()->isWindows() ? 'where' : 'which', $this->commandName);
 
-        return new Task($this->getServers(), $shellCommand);
-    }
-
-    private function isWindows(): bool
-    {
-        return '\\' === DIRECTORY_SEPARATOR;
+        return new Task([$this->getServer()], $shellCommand);
     }
 }

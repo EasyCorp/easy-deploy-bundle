@@ -16,17 +16,17 @@ use EasyCorp\Bundle\EasyDeployBundle\Task\Task;
 
 abstract class AbstractRequirement
 {
-    /** @var Server[] */
-    private $servers;
+    /** @var Server */
+    private $server;
 
-    public function __construct(array $servers)
+    public function __construct(Server $server)
     {
-        $this->servers = $servers;
+        $this->server= $server;
     }
 
-    public function getServers(): array
+    public function getServer(): array
     {
-        return $this->servers;
+        return $this->server;
     }
 
     abstract public function getChecker(): Task;

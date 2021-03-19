@@ -37,15 +37,19 @@ abstract class DefaultDeployer extends AbstractDeployer
         $allServers = $this->getServers()->findAll();
         $appServers = $this->getServers()->findByRoles([Server::ROLE_APP]);
 
-        $requirements[] = new CommandExists([$localhost], 'git');
-        $requirements[] = new CommandExists([$localhost], 'ssh');
+        $requirements[] = new CommandExists($localhost, 'git');
+        $requirements[] = new CommandExists($localhost, 'ssh');
 
-        $requirements[] = new AllowsLoginViaSsh($allServers);
-        $requirements[] = new CommandExists($appServers, $this->getConfig(Option::remoteComposerBinaryPath));
-        if ('acl' === $this->getConfig(Option::permissionMethod)) {
-            $requirements[] = new CommandExists($appServers, 'setfacl');
+        foreach($allServers as $server) {
+            $requirements[] = new AllowsLoginViaSsh($server);
         }
 
+        foreach($appServers as $appServer) {
+            $requirements[] = new CommandExists($appServer, $this->getConfig(Option::remoteComposerBinaryPath));
+            if ('acl' === $this->getConfig(Option::permissionMethod)) {
+                $requirements[] = new CommandExists($appServer, 'setfacl');
+            }
+        }
         return $requirements;
     }
 

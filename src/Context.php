@@ -89,7 +89,7 @@ class Context
 
     private function createLocalHost(): Server
     {
-        $localhost = new Server('localhost');
+        $localhost = new Server('localhost', [], [], '\\' === DIRECTORY_SEPARATOR);
         $localhost->set(Property::project_dir, $this->projectDir);
 
         return $localhost;
