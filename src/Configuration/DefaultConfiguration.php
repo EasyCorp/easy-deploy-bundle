@@ -70,9 +70,9 @@ final class DefaultConfiguration extends AbstractConfiguration
 
     // this proxy method is needed because the autocompletion breaks
     // if the parent method is used directly
-    public function server(string $sshDsn, array $roles = [Server::ROLE_APP], array $properties = []): self
+    public function server(string $sshDsn, array $roles = [Server::ROLE_APP], array $properties = [], $windows = false): self
     {
-        parent::server($sshDsn, $roles, $properties);
+        parent::server($sshDsn, $roles, $properties, $windows);
 
         return $this;
     }
