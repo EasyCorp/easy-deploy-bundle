@@ -62,7 +62,7 @@ class TaskRunner
             $envVarsAsString = http_build_query($envVars, '', ' ');
             // the ';' after the env vars makes them available to all commands, not only the first one
             // parenthesis create a sub-shell so the env vars don't affect to the parent shell
-            $shellCommand = sprintf('(' . ($server->isWindows() ? 'set' : '') . ' %s; %s)', $envVarsAsString, $shellCommand);
+            $shellCommand = sprintf('( set %s; %s)', $envVarsAsString, $shellCommand);
         }
 
         if(!$server->isWindows()){
