@@ -38,18 +38,13 @@ abstract class DefaultDeployer extends AbstractDeployer
         $allServers = $this->getServers()->findAll();
         $appServers = $this->getServers()->findByRoles([Server::ROLE_APP]);
 
-        $requirements[] = new CommandExists($localhost, 'git');
-        $requirements[] = new CommandExists($localhost, 'ssh');
+        $requirements[] = new CommandExists([$localhost], 'git');
+        $requirements[] = new CommandExists([$localhost], 'ssh');
 
-        foreach($allServers as $server) {
-            $requirements[] = new AllowsLoginViaSsh($server);
-        }
-
-        foreach($appServers as $appServer) {
-            $requirements[] = new CommandExists($appServer, $this->getConfig(Option::remoteComposerBinaryPath));
-            if ('acl' === $this->getConfig(Option::permissionMethod)) {
-                $requirements[] = new CommandExists($appServer, 'setfacl');
-            }
+        $requirements[] = new AllowsLoginViaSsh($allServers);
+        $requirements[] = new CommandExists($appServers, $this->getConfig(Option::remoteComposerBinaryPath));
+        if ('acl' === $this->getConfig(Option::permissionMethod)) {
+            $requirements[] = new CommandExists($appServers, 'setfacl');
         }
         return $requirements;
     }
@@ -166,14 +161,14 @@ abstract class DefaultDeployer extends AbstractDeployer
     private function doSymlinkToPreviousRelease(): void
     {
         $this->log('<h2>Reverting the current symlink to the previous version</>');
-        $this->runRemote('_previous_release_dirname=$(ls -r1 {{ deploy_dir }}/releases | head -n 2 | tail -n 1) && rm -f {{ deploy_dir }}/current && ln -s {{ deploy_dir }}/releases/$_previous_release_dirname {{ deploy_dir }}/current');
+        $this->runRemote('{{ _env_command export}} _previous_release_dirname=$(ls -r1 {{ deploy_dir }}/releases | head -n 2 | tail -n 1) && rm -f {{ deploy_dir }}/current && ln -s {{ deploy_dir }}/releases/$_previous_release_dirname {{ deploy_dir }}/current');
     }
 
     private function doDeleteLastReleaseDirectory(): void
     {
         // this is needed to avoid rolling back in the future to this version
         $this->log('<h2>Deleting the last release directory</>');
-        $this->runRemote('_last_release_dirname=$(ls -r1 {{ deploy_dir }}/releases | head -n 1) && rm -fr {{ deploy_dir }}/releases/$_last_release_dirname');
+        $this->runRemote('{{ _env_command export}} _last_release_dirname=$(ls -r1 {{ deploy_dir }}/releases | head -n 1) && rm -fr {{ deploy_dir }}/releases/$_last_release_dirname');
     }
 
     private function initializeServerOptions(): void
@@ -237,7 +232,7 @@ abstract class DefaultDeployer extends AbstractDeployer
         $this->runRemote('mkdir -p {{ deploy_dir }} && mkdir -p {{ deploy_dir }}/releases && mkdir -p {{ deploy_dir }}/shared');
 
         /** @var TaskCompleted[] $results */
-        $results = $this->runRemote('_release_path={{ deploy_dir }}/releases/' . date('dmYHis') . ' && mkdir -p $_release_path && echo $_release_path');
+        $results = $this->runRemote('{{ _env_command export}} _release_path={{ deploy_dir }}/releases/' . date('dmYHis') . ' && mkdir -p $_release_path && echo $_release_path');
         foreach ($results as $result) {
             $remoteProjectDir = $this->getContext()->isDryRun() ? '(the remote project_dir)' : $result->getTrimmedOutput();
             $result->getServer()->set(Property::project_dir, $remoteProjectDir);
