@@ -13,6 +13,8 @@ namespace EasyCorp\Bundle\EasyDeployBundle\Server;
 
 use EasyCorp\Bundle\EasyDeployBundle\Exception\ServerConfigurationException;
 use EasyCorp\Bundle\EasyDeployBundle\Helper\Str;
+use EasyCorp\Bundle\EasyDeployBundle\System\AbstractSystem;
+use EasyCorp\Bundle\EasyDeployBundle\System\DefaultSystem;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 class Server
@@ -24,8 +26,9 @@ class Server
     private $host;
     private $port;
     private $properties;
+    private $system;
 
-    public function __construct(string $dsn, array $roles = [self::ROLE_APP], array $properties = [])
+    public function __construct(string $dsn, array $roles = [self::ROLE_APP], array $properties = [], string $system = null)
     {
         $this->roles = $roles;
         $this->properties = new ParameterBag($properties);
@@ -41,6 +44,14 @@ class Server
         $this->host = $params['host'];
 
         $this->port = $params['port'] ?? null;
+
+        $systemClassName = '\\EasyCorp\\Bundle\\EasyDeployBundle\\System\\' . ucfirst((string)$system) . 'System';
+        if($system && class_exists($systemClassName)){
+            $this->system = new $systemClassName();
+        }else{
+            $this->system = new DefaultSystem();
+        }
+
     }
 
     public function __toString(): string
@@ -58,6 +69,13 @@ class Server
         $definedProperties = $this->properties;
         $resolved = preg_replace_callback('/(\{\{\s*(?<propertyName>.+)\s*\}\})/U', function (array $matches) use ($definedProperties, $expression) {
             $propertyName = trim($matches['propertyName']);
+            //Resolve special environment command
+            if(substr($propertyName,0, strlen('_env_command')) === '_env_command'){
+                if(!isset(explode(' ', $propertyName)[1])){
+                    return '';
+                }
+                return $this->system->getCommand(explode(' ', $propertyName)[1]);
+            }
             if (!$definedProperties->has($propertyName)) {
                 throw new \InvalidArgumentException(sprintf('The "%s" property in "%s" expression is not a valid server property.', $propertyName, $expression));
             }
@@ -121,4 +139,10 @@ class Server
     {
         return $this->port;
     }
+
+    public function getSystem(): AbstractSystem
+    {
+        return $this->system;
+    }
+
 }

@@ -62,7 +62,11 @@ class TaskRunner
             $envVarsAsString = http_build_query($envVars, '', ' ');
             // the ';' after the env vars makes them available to all commands, not only the first one
             // parenthesis create a sub-shell so the env vars don't affect to the parent shell
-            $shellCommand = sprintf('(export %s; %s)', $envVarsAsString, $shellCommand);
+            $shellCommand = sprintf('(' . $server->getSystem()->getCommand('export') . ' %s; %s)', $envVarsAsString, $shellCommand);
+        }
+
+        if($server->getSystem()->getSessionPrefix()){
+            $shellCommand = $server->getSystem()->getSessionPrefix() . $shellCommand;
         }
 
         $this->logger->log(sprintf('[<server>%s</>] Executing command: <command>%s</>', $server, $shellCommand));

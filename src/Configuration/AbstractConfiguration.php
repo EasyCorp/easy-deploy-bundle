@@ -31,7 +31,7 @@ abstract class AbstractConfiguration
         $this->servers = new ServerRepository();
     }
 
-    public function server(string $sshDsn, array $roles = [Server::ROLE_APP], array $properties = [])
+    public function server(string $sshDsn, array $roles = [Server::ROLE_APP], array $properties = [], $system = null)
     {
         $reservedProperties = array_merge(self::RESERVED_SERVER_PROPERTIES, $this->getReservedServerProperties());
         $reservedPropertiesUsed = array_intersect($reservedProperties, array_keys($properties));
@@ -39,7 +39,7 @@ abstract class AbstractConfiguration
             throw new InvalidConfigurationException(sprintf('These properties set for the "%s" server are reserved: %s. Use different property names.', $sshDsn, implode(', ', $reservedPropertiesUsed)));
         }
 
-        $this->servers->add(new Server($sshDsn, $roles, $properties));
+        $this->servers->add(new Server($sshDsn, $roles, $properties, $system));
     }
 
     public function useSshAgentForwarding(bool $useIt)
