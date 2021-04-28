@@ -187,7 +187,7 @@ abstract class DefaultDeployer extends AbstractDeployer
         $appServers = $this->getServers()->findByRoles([Server::ROLE_APP]);
         foreach ($appServers as $server) {
             $this->log(sprintf('<h3>Setting the %s property for <server>%s</> server</>', Property::deploy_dir, $server));
-            $server->set(Property::deploy_dir, $this->getConfig(Option::deployDir));
+            $server->set(Property::deploy_dir, $server->get(Property::deploy_dir, $this->getConfig(Option::deployDir)));
         }
     }
 

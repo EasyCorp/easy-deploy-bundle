@@ -361,7 +361,7 @@ final class DefaultConfiguration extends AbstractConfiguration
 
     protected function getReservedServerProperties(): array
     {
-        return [Property::bin_dir, Property::config_dir, Property::console_bin, Property::cache_dir, Property::deploy_dir, Property::log_dir, Property::src_dir, Property::templates_dir, Property::web_dir];
+        return [Property::bin_dir, Property::config_dir, Property::console_bin, Property::cache_dir, Property::log_dir, Property::src_dir, Property::templates_dir, Property::web_dir];
     }
 
     private function setDefaultConfiguration(int $symfonyMajorVersion, $symfonyMinorVersion): void
