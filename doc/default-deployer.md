@@ -37,6 +37,19 @@ public function configure()
 }
 ```
 
+You can optionaly define a directory by deployed server as :
+```php
+public function configure()
+{
+    return $this->getConfigBuilder()
+        ->server('user@hostname', ['app'], [
+            'deploy_dir' => '/var/www/my-project',
+        ])
+        // ...
+    ;
+}
+```
+
 Then, the following directory structure is created on each remote server:
 
 ```
