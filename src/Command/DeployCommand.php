@@ -69,7 +69,7 @@ class DeployCommand extends Command
         $this->createDefaultConfigFile($input, $output, $defaultConfigPath, $input->getArgument('stage'));
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $logFilePath = sprintf('%s/deploy_%s.log', $this->logDir, $input->getArgument('stage'));
         $context = new Context($input, $output, $this->projectDir, $logFilePath, true === $input->getOption('dry-run'), $output->isVerbose());

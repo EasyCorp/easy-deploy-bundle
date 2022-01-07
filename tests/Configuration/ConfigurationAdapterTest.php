@@ -21,7 +21,7 @@ class ConfigurationAdapterTest extends TestCase
     /** @var DefaultConfiguration */
     private $config;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->config = (new DefaultConfiguration(__DIR__))
             ->sharedFilesAndDirs([])

@@ -64,7 +64,7 @@ class RollbackCommand extends Command
         throw new \RuntimeException(sprintf("The default configuration file does not exist or it's not readable, and no custom configuration file was given either. Create the '%s' configuration file and run this command again.", $defaultConfigPath));
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $logFilePath = sprintf('%s/deploy_%s.log', $this->logDir, $input->getArgument('stage'));
         $context = new Context($input, $output, $this->projectDir, $logFilePath, true === $input->getOption('dry-run'), $output->isVerbose());

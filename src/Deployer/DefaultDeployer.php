@@ -224,6 +224,8 @@ abstract class DefaultDeployer extends AbstractDeployer
         if (null === $server->get(Property::console_bin)) {
             throw new InvalidConfigurationException(sprintf('The "console" binary of your Symfony application is not available in any of the following directories: %s. Configure the "binDir" option and set it to the directory that contains the "console" binary.', implode(', ', $symfonyConsoleBinaries)));
         }
+
+        return $server->resolveProperties('{{ project_dir }}/bin/console');
     }
 
     private function createRemoteDirectoryLayout(): void
