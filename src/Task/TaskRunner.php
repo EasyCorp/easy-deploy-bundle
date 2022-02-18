@@ -33,24 +33,22 @@ class TaskRunner
      */
     public function run(Task $task): array
     {
-        $results = [];
+        // Start all processes asynchronously
+        $processes = [];
         foreach ($task->getServers() as $server) {
-            $results[] = $this->doRun($server, $server->resolveProperties($task->getShellCommand()), $task->getEnvVars());
+            $processes[] = $this->startProcess($server, $server->resolveProperties($task->getShellCommand()), $task->getEnvVars());
+        }
+
+        // Collect all their results
+        $results = [];
+        foreach ($processes as $process) {
+            $results[] = $process->getCompletionResult();
         }
 
         return $results;
     }
 
-    private function createProcess(string $shellCommand): Process
-    {
-        if (method_exists(Process::class, 'fromShellCommandline')) {
-            return Process::fromShellCommandline($shellCommand);
-        }
-
-        return new Process($shellCommand);
-    }
-
-    private function doRun(Server $server, string $shellCommand, array $envVars): TaskCompleted
+    private function startProcess(Server $server, string $shellCommand, array $envVars): PendingTask
     {
         if ($server->has(Property::project_dir)) {
             $shellCommand = sprintf('cd %s && %s', $server->get(Property::project_dir), $shellCommand);
@@ -67,26 +65,9 @@ class TaskRunner
 
         $this->logger->log(sprintf('[<server>%s</>] Executing command: <command>%s</>', $server, $shellCommand));
 
-        if ($this->isDryRun) {
-            return new TaskCompleted($server, '', 0);
-        }
+        $pendingTask = new PendingTask($server, $shellCommand, $this->logger, $this->isDryRun);
+        $pendingTask->start();
 
-        if ($server->isLocalHost()) {
-            $process = $this->createProcess($shellCommand);
-        } else {
-            $process = $this->createProcess(sprintf('%s %s', $server->getSshConnectionString(), escapeshellarg($shellCommand)));
-        }
-
-        $process->setTimeout(null);
-
-        $process = $process->mustRun(function ($type, $buffer) {
-            if (Process::ERR === $type) {
-                $this->logger->log(Str::prefix(rtrim($buffer, PHP_EOL), '| <stream>err ::</> '));
-            } else {
-                $this->logger->log(Str::prefix(rtrim($buffer, PHP_EOL), '| <stream>out ::</> '));
-            }
-        });
-
-        return new TaskCompleted($server, $process->getOutput(), $process->getExitCode());
+        return $pendingTask;
     }
 }
