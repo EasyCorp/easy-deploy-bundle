@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 
 class TaskCompletedTest extends TestCase
 {
-    public function test_server()
+    public function test_server(): void
     {
         $result = new TaskCompleted(new Server('deployer@host1'), 'aaa', 0);
 
@@ -25,7 +25,7 @@ class TaskCompletedTest extends TestCase
         $this->assertSame('host1', $result->getServer()->getHost());
     }
 
-    public function test_output()
+    public function test_output(): void
     {
         $result = new TaskCompleted(new Server('localhost'), 'aaa   ', 0);
 
@@ -33,7 +33,7 @@ class TaskCompletedTest extends TestCase
         $this->assertSame('aaa', $result->getTrimmedOutput());
     }
 
-    public function test_exit_code()
+    public function test_exit_code(): void
     {
         $result = new TaskCompleted(new Server('localhost'), 'aaa', -1);
 

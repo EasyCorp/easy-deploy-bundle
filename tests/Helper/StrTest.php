@@ -17,36 +17,36 @@ use PHPUnit\Framework\TestCase;
 class StrTest extends TestCase
 {
     /** @dataProvider startsWithProvider */
-    public function test_starts_with(string $haystack, string $needle, bool $expectedResult)
+    public function test_starts_with(string $haystack, string $needle, bool $expectedResult): void
     {
         $this->assertSame($expectedResult, Str::startsWith($haystack, $needle));
     }
 
     /** @dataProvider endsWithProvider */
-    public function test_ends_with(string $haystack, string $needle, bool $expectedResult)
+    public function test_ends_with(string $haystack, string $needle, bool $expectedResult): void
     {
         $this->assertSame($expectedResult, Str::endsWith($haystack, $needle));
     }
 
     /** @dataProvider containsProvider */
-    public function test_contains(string $haystack, string $needle, bool $expectedResult)
+    public function test_contains(string $haystack, string $needle, bool $expectedResult): void
     {
         $this->assertSame($expectedResult, Str::contains($haystack, $needle));
     }
 
     /** @dataProvider prefixProvider */
-    public function test_prefix($text, string $prefix, string $expectedResult)
+    public function test_prefix($text, string $prefix, string $expectedResult): void
     {
         $this->assertSame($expectedResult, Str::prefix($text, $prefix));
     }
 
     /** @dataProvider stringifyProvider */
-    public function test_stringify($value, string $expectedResult)
+    public function test_stringify($value, string $expectedResult): void
     {
         $this->assertSame($expectedResult, Str::stringify($value));
     }
 
-    public function test_format_as_table()
+    public function test_format_as_table(): void
     {
         $values = ['key1' => -3.14, 'key3 with long name' => ['a', 'b' => 2], 'key2' => 'aaa'];
         $result = <<<TABLE
@@ -58,7 +58,7 @@ TABLE;
         $this->assertSame($result, Str::formatAsTable($values));
     }
 
-    public function startsWithProvider()
+    public function startsWithProvider(): ?\Generator
     {
         yield ['', '', false];
         yield ['abc', '', false];
@@ -71,7 +71,7 @@ TABLE;
         yield ['<h1>a</> bc', 'a', false];
     }
 
-    public function endsWithProvider()
+    public function endsWithProvider(): ?\Generator
     {
         yield ['', '', true];
         yield ['abc', '', false];
@@ -84,7 +84,7 @@ TABLE;
         yield ['ab <h1>c</>', 'c', false];
     }
 
-    public function containsProvider()
+    public function containsProvider(): ?\Generator
     {
         yield ['', '', false];
         yield ['abc', '', false];
@@ -102,7 +102,7 @@ TABLE;
         yield ['ab <h1>c</>', 'ab c', false];
     }
 
-    public function prefixProvider()
+    public function prefixProvider(): ?\Generator
     {
         yield ['', '', ''];
         yield ['aaa', 'xxx', 'xxxaaa'];
@@ -110,7 +110,7 @@ TABLE;
         yield [['aaa', 'bbb', 'ccc'], 'xxx', "xxxaaa\nxxxbbb\nxxxccc"];
     }
 
-    public function stringifyProvider()
+    public function stringifyProvider(): ?\Generator
     {
         yield ['', ''];
         yield [fopen('php://memory', 'r+'), 'PHP Resource'];
