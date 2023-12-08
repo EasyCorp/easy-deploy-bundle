@@ -38,7 +38,7 @@ class DeployCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('deploy')
@@ -50,7 +50,7 @@ class DeployCommand extends Command
         ;
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $customConfigPath = $input->getOption('configuration');
         if (null !== $customConfigPath && !is_readable($customConfigPath)) {
@@ -58,12 +58,12 @@ class DeployCommand extends Command
         }
 
         if (null !== $customConfigPath && is_readable($customConfigPath)) {
-            return $this->configFilePath = $customConfigPath;
+            $this->configFilePath = $customConfigPath;
         }
 
         $defaultConfigPath = SymfonyConfigPathGuesser::guess($this->projectDir, $input->getArgument('stage'));
         if (is_readable($defaultConfigPath)) {
-            return $this->configFilePath = $defaultConfigPath;
+            $this->configFilePath = $defaultConfigPath;
         }
 
         $this->createDefaultConfigFile($input, $output, $defaultConfigPath, $input->getArgument('stage'));
