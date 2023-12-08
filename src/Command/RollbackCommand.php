@@ -33,7 +33,7 @@ class RollbackCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('rollback')
@@ -45,7 +45,7 @@ class RollbackCommand extends Command
         ;
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $customConfigPath = $input->getOption('configuration');
         if (null !== $customConfigPath && !is_readable($customConfigPath)) {
@@ -53,12 +53,12 @@ class RollbackCommand extends Command
         }
 
         if (null !== $customConfigPath && is_readable($customConfigPath)) {
-            return $this->configFilePath = $customConfigPath;
+            $this->configFilePath = $customConfigPath;
         }
 
         $defaultConfigPath = SymfonyConfigPathGuesser::guess($this->projectDir, $input->getArgument('stage'));
         if (is_readable($defaultConfigPath)) {
-            return $this->configFilePath = $defaultConfigPath;
+            $this->configFilePath = $defaultConfigPath;
         }
 
         throw new \RuntimeException(sprintf("The default configuration file does not exist or it's not readable, and no custom configuration file was given either. Create the '%s' configuration file and run this command again.", $defaultConfigPath));
