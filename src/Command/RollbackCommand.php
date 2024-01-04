@@ -54,11 +54,15 @@ class RollbackCommand extends Command
 
         if (null !== $customConfigPath && is_readable($customConfigPath)) {
             $this->configFilePath = $customConfigPath;
+
+            return;
         }
 
         $defaultConfigPath = SymfonyConfigPathGuesser::guess($this->projectDir, $input->getArgument('stage'));
         if (is_readable($defaultConfigPath)) {
             $this->configFilePath = $defaultConfigPath;
+
+            return;
         }
 
         throw new \RuntimeException(sprintf("The default configuration file does not exist or it's not readable, and no custom configuration file was given either. Create the '%s' configuration file and run this command again.", $defaultConfigPath));
