@@ -59,11 +59,15 @@ class DeployCommand extends Command
 
         if (null !== $customConfigPath && is_readable($customConfigPath)) {
             $this->configFilePath = $customConfigPath;
+
+            return;
         }
 
         $defaultConfigPath = SymfonyConfigPathGuesser::guess($this->projectDir, $input->getArgument('stage'));
         if (is_readable($defaultConfigPath)) {
             $this->configFilePath = $defaultConfigPath;
+
+            return;
         }
 
         $this->createDefaultConfigFile($input, $output, $defaultConfigPath, $input->getArgument('stage'));
