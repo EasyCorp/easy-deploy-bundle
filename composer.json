@@ -1,14 +1,14 @@
 {
-    "name": "easycorp/easy-deploy-bundle",
+    "name": "reconnect/easy-deploy-bundle",
     "type": "symfony-bundle",
     "description": "The easiest way to deploy Symfony applications",
     "keywords": ["deploy", "deployment", "deployer"],
-    "homepage": "https://github.com/EasyCorp/easy-deploy-bundle",
+    "homepage": "https://github.com/reconnect/easy-deploy-bundle",
     "license": "MIT",
     "authors": [
         {
-            "name": "Javier Eguiluz",
-            "email": "javiereguiluz@gmail.com"
+            "name": "Thibaut Cheymol",
+            "email": "thibaut.cheymol@gmail.com"
         }
     ],
     "require": {
