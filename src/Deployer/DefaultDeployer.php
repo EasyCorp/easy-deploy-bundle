@@ -224,6 +224,8 @@ abstract class DefaultDeployer extends AbstractDeployer
         if (null === $server->get(Property::console_bin)) {
             throw new InvalidConfigurationException(sprintf('The "console" binary of your Symfony application is not available in any of the following directories: %s. Configure the "binDir" option and set it to the directory that contains the "console" binary.', implode(', ', $symfonyConsoleBinaries)));
         }
+
+        return $server->resolveProperties('{{ project_dir }}/bin/console');
     }
 
     private function createRemoteDirectoryLayout(): void
@@ -261,7 +263,8 @@ abstract class DefaultDeployer extends AbstractDeployer
         $this->runRemote(sprintf('if [ -d {{ deploy_dir }}/repo ]; then cd {{ deploy_dir }}/repo && git fetch -q origin && git fetch --tags -q origin && git reset -q --hard %s && git clean -q -d -x -f; else git clone -q -b %s %s {{ deploy_dir }}/repo && cd {{ deploy_dir }}/repo && git checkout -q -b deploy %s; fi', $repositoryRevision, $this->getConfig(Option::repositoryBranch), $this->getConfig(Option::repositoryUrl), $repositoryRevision));
 
         $this->log('<h3>Copying the updated code to the new release directory</>');
-        $this->runRemote(sprintf('cp -RPp {{ deploy_dir }}/repo/* {{ project_dir }}'));
+        $this->runRemote(sprintf('cp -pPR {{ deploy_dir }}/repo/* {{ project_dir }}'));
+        $this->runRemote(sprintf('cp -p {{ deploy_dir }}/repo/.env* {{ project_dir }}'));
     }
 
     private function doCreateCacheDir(): void

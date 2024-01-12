@@ -11,6 +11,7 @@
 
 namespace EasyCorp\Bundle\EasyDeployBundle\EasyDeployBundle\Tests;
 
+use EasyCorp\Bundle\EasyDeployBundle\Exception\ServerConfigurationException;
 use EasyCorp\Bundle\EasyDeployBundle\Server\Property;
 use EasyCorp\Bundle\EasyDeployBundle\Server\Server;
 use PHPUnit\Framework\TestCase;
@@ -27,12 +28,10 @@ class ServerTest extends TestCase
         $this->assertSame($expectedPort, $server->getPort());
     }
 
-    /**
-     * @expectedException \EasyCorp\Bundle\EasyDeployBundle\Exception\ServerConfigurationException
-     * @expectedExceptionMessage The host is missing (define it as an IP address or a host name)
-     */
     public function test_dsn_parsing_error()
     {
+        $this->expectException(ServerConfigurationException::class);
+        $this->expectExceptionMessage('The host is missing (define it as an IP address or a host name)');
         new Server('deployer@');
     }
 
@@ -115,16 +114,16 @@ class ServerTest extends TestCase
 
     /**
      * @dataProvider wrongExpressionProvider
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessageRegExp /The ".*" property in ".*" expression is not a valid server property./
      */
     public function test_resolve_unknown_properties(array $properties, string $expression)
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessageMatches('/The ".*" property in ".*" expression is not a valid server property./');
         $server = new Server('host', [], $properties);
         $server->resolveProperties($expression);
     }
 
-    public function dsnProvider()
+    public function dsnProvider(): \Generator
     {
         yield ['123.123.123.123', '123.123.123.123', null, null];
         yield ['deployer@123.123.123.123', '123.123.123.123', 'deployer', null];
@@ -143,7 +142,7 @@ class ServerTest extends TestCase
         yield ['ssh://deployer@host:22001', 'host', 'deployer', 22001];
     }
 
-    public function localDsnProvider()
+    public function localDsnProvider(): \Generator
     {
         yield ['local'];
         yield ['deployer@local'];
@@ -158,7 +157,7 @@ class ServerTest extends TestCase
         yield ['deployer@127.0.0.1:22001'];
     }
 
-    public function serverRolesProvider()
+    public function serverRolesProvider(): \Generator
     {
         yield [[], []];
         yield [[Server::ROLE_APP], [Server::ROLE_APP]];
@@ -166,7 +165,7 @@ class ServerTest extends TestCase
         yield [['custom_role_1', 'custom_role_2'], ['custom_role_1', 'custom_role_2']];
     }
 
-    public function sshConnectionStringProvider()
+    public function sshConnectionStringProvider(): \Generator
     {
         yield ['localhost', ''];
         yield ['123.123.123.123', 'ssh 123.123.123.123'];
@@ -174,7 +173,7 @@ class ServerTest extends TestCase
         yield ['deployer@123.123.123.123:22001', 'ssh deployer@123.123.123.123 -p 22001'];
     }
 
-    public function expressionProvider()
+    public function expressionProvider(): \Generator
     {
         yield [['prop1' => 'aaa'], '{{ prop1 }}', 'aaa'];
         yield [['prop.1' => 'aaa'], '{{ prop.1 }}', 'aaa'];
@@ -188,7 +187,7 @@ class ServerTest extends TestCase
         yield [['prop1' => 'aaa', 'prop2' => 'bbb'], 'cd {{ prop1 }}{{ prop2 }}', 'cd aaabbb'];
     }
 
-    public function wrongExpressionProvider()
+    public function wrongExpressionProvider(): \Generator
     {
         yield [[], '{{ prop1 }}'];
         yield [['prop1' => 'aaa'], '{{ prop 1 }}'];

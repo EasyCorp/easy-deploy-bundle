@@ -20,7 +20,7 @@ class ServerRepositoryTest extends TestCase
     /** @var ServerRepository */
     private $servers;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $repository = new ServerRepository();
         $repository->add(new Server('host0'));
